@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.Statement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 /**
@@ -39,8 +36,8 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         userTextField = new javax.swing.JTextField();
         passField = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        ButtonLogin = new javax.swing.JButton();
+        LabelRegister = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,15 +52,20 @@ public class Principal extends javax.swing.JFrame {
 
         passField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
-        jButton1.setText("INGRESAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        ButtonLogin.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
+        ButtonLogin.setText("INGRESAR");
+        ButtonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ButtonLoginActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Registrarse");
+        LabelRegister.setText("Registrarse");
+        LabelRegister.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                LabelRegisterMousePressed(evt);
+            }
+        });
 
         jLabel4.setForeground(new java.awt.Color(204, 0, 0));
 
@@ -84,13 +86,13 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(155, 155, 155)
-                        .addComponent(jLabel3))
+                        .addComponent(LabelRegister))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(139, 139, 139)
                         .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addComponent(jButton1)))
+                        .addComponent(ButtonLogin)))
                 .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -105,18 +107,18 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LabelRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(ButtonLogin)
                 .addGap(41, 41, 41))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void ButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoginActionPerformed
         
             String user=userTextField.getText();
             String pass=passField.getText();
@@ -174,7 +176,11 @@ public class Principal extends javax.swing.JFrame {
        
         
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_ButtonLoginActionPerformed
+
+    private void LabelRegisterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LabelRegisterMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LabelRegisterMousePressed
 
     /**
      * @param args the command line arguments
@@ -212,10 +218,10 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton ButtonLogin;
+    private javax.swing.JLabel LabelRegister;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField passField;
     private javax.swing.JTextField userTextField;
