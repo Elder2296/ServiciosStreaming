@@ -43,7 +43,7 @@ public class Register extends javax.swing.JFrame {
                     server.getResult("INSERT INTO User (Nombre,Apellido,usuario,contrasenia,creacion)"+
                                 "VALUES(\'"+nameField.getText()+"\', \'"+lastnameField.getText()+"\',\'"+userField.getText()+"\',\'"+
                                 passField.getText()+"\',\'"+date+"\');");
-                    Login principal= new Login();
+                    Principal principal= new Principal();
                     principal.setVisible(true);
                     principal.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     dispose();
