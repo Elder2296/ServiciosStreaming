@@ -21,6 +21,10 @@ public class Register extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     public void Register(){
+        if(nameField.getText().equals("") || lastnameField.getText().equals("")||userField.getText().equals("")||passField.getText().equals("")|| confirmpassField.getText().equals("")){
+            alertLabel.setText("Faltan campos obligatorios!!!");
+            
+        }else{
         Server server=Server.getInstance();
         
         ResultSet result=server.getResult("SELECT * FROM User WHERE usuario = \""+userField.getText()+"\"");
@@ -43,7 +47,7 @@ public class Register extends javax.swing.JFrame {
                     server.getResult("INSERT INTO User (Nombre,Apellido,usuario,contrasenia,creacion)"+
                                 "VALUES(\'"+nameField.getText()+"\', \'"+lastnameField.getText()+"\',\'"+userField.getText()+"\',\'"+
                                 passField.getText()+"\',\'"+date+"\');");
-                    Principal principal= new Principal();
+                    Login principal= new Login();
                     principal.setVisible(true);
                     principal.setDefaultCloseOperation(EXIT_ON_CLOSE);
                     dispose();
@@ -54,6 +58,7 @@ public class Register extends javax.swing.JFrame {
             }
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
+        }
         }
         
     }
