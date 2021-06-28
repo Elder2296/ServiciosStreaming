@@ -126,7 +126,11 @@ public class Login extends javax.swing.JFrame {
             ResultSet result=server.getResult("SELECT * FROM User WHERE usuario = \""+user+"\" AND contrasenia=\""+pass+"\"");
             try{
                 if(result.next()){
-                    System.out.println("INICIO DE SESION CORRECTO");
+                    Principal principal= new Principal();
+                    principal.setVisible(true);
+                    principal.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    dispose();
+                    //System.out.println("INICIO DE SESION CORRECTO");
                 }else{
                     jLabel4.setText("Datos Incorrectos!!!");
                 }
