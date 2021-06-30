@@ -23,6 +23,8 @@ public class Principal extends javax.swing.JFrame {
         panelprincipal.add("User Register",userregister);
         RegisterService services=new RegisterService();
         panelprincipal.add("Service Register",services);
+        UserControl uscontrol=new UserControl();
+        panelprincipal.add("User control",uscontrol);
     }
 
     /**

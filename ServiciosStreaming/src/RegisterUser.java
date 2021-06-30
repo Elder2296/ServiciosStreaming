@@ -26,18 +26,18 @@ public class RegisterUser extends javax.swing.JPanel {
             alertLabel.setText("Al menos debe llenar un cuadro!!!");
         }else{
             Server server=Server.getInstance();
-            String userF=facebookField.getText();
-            String wasap=whatsField.getText();
-            String email=emailField.getText();
-            String sqlInstruccion = "SELECT * FROM  Clientes WHERE UsuarioFacebook = \""+userF+"\" or "+"whatsapp = \""+wasap+"\" or email = \""+email+"\";";
-            ResultSet result=server.getResult(sqlInstruccion);
+            
+            ResultSet result=server.getResult(this.getSql());
             try{
                 if(result.next()){
                     alertLabel.setText("Usuario ya se encuentra Registrado!!!");
                 }else{
                     String name=nameField.getText();
                     String lastN=lastnameField.getText();
-                    sqlInstruccion="INSERT INTO Clientes (nombre1,apellido1,UsuarioFacebook,whatsapp,email)"
+                    String userF=facebookField.getText();
+                    String wasap=whatsField.getText();
+                    String email=emailField.getText();
+                    String sqlInstruccion="INSERT INTO Clientes (nombre1,apellido1,UsuarioFacebook,whatsapp,email)"
                             + " VALUES(\'"+ name +"\',\'"+ lastN +"\',\'"+ userF +"\',\'"+wasap+"\',\'"+email+"\');";
                     server.getResult(sqlInstruccion);
                     alertLabel.setText("Registro Exitoso!!!");
@@ -54,6 +54,42 @@ public class RegisterUser extends javax.swing.JPanel {
             
             
         }
+    }
+    private String getSql(){
+        String sql="";
+        String userF=facebookField.getText();
+        String wasap=whatsField.getText();
+        String email=emailField.getText();
+        
+        
+        if(userF.equals("") &&  wasap.equals("") && email.equals("")){
+            alertLabel.setText("Llene al menos un campo más!!!");
+        }
+        
+        else if(userF.equals("") && wasap.equals("")){
+            
+            sql="SELECT * FROM Clientes WHERE email = \""+email+"\"";
+        
+        }else if(userF.equals("") && email.equals("")){
+            
+            
+            sql="SELECT * FROM Clientes WHERE whatsapp = \""+wasap+"\"";
+        
+        }else if(email.equals("") && wasap.equals("")){
+            
+            sql="SELECT * FROM Clientes WHERE UsuarioFacebook = \""+userF+"\"";
+               
+        }else if(userF.equals("") ){
+            sql="SELECT * FROM Clientes WHERE whatsapp = \""+wasap+"\" and email = \""+email+"\"";
+        }else if(wasap.equals("")){
+            sql="SELECT * FROM Clientes WHERE UsuarioFacebook = \""+userF+"\" and email = \""+email+"\"";
+        }else if(email.equals("")){
+            sql="SELECT * FROM Clientes WHERE whatsapp = \""+wasap+"\" and UsuarioFacebook = \""+userF+"\"";
+        }else{
+            sql = "SELECT * FROM  Clientes WHERE UsuarioFacebook = \""+userF+"\" or "+"whatsapp = \""+wasap+"\" or email = \""+email+"\";";
+            
+        }
+        return sql;
     }
 
     /**
@@ -77,6 +113,7 @@ public class RegisterUser extends javax.swing.JPanel {
         emailField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         alertLabel = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(91, 91, 95));
 
@@ -116,6 +153,14 @@ public class RegisterUser extends javax.swing.JPanel {
         alertLabel.setForeground(new java.awt.Color(204, 51, 0));
         alertLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jButton2.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
+        jButton2.setText("Suscribir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,7 +176,7 @@ public class RegisterUser extends javax.swing.JPanel {
                             .addComponent(jLabel4)
                             .addComponent(jLabel6)))
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lastnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,8 +189,10 @@ public class RegisterUser extends javax.swing.JPanel {
                 .addComponent(alertLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(156, 156, 156)
+                .addGap(168, 168, 168)
                 .addComponent(jButton1)
+                .addGap(57, 57, 57)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -177,7 +224,9 @@ public class RegisterUser extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(alertLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addGap(53, 53, 53))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -187,12 +236,17 @@ public class RegisterUser extends javax.swing.JPanel {
         registerUser();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel alertLabel;
     private javax.swing.JTextField emailField;
     private javax.swing.JTextField facebookField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
