@@ -43,8 +43,8 @@ public class RegisterService extends javax.swing.JPanel {
                     String pass=passwordField.getText();
                     String rep=representativeField.getText();
                     int maxAct =Integer.parseInt( maxactivesField.getText());
-                    sqlInstruccion="INSERT INTO Servicio (nombre,fechaPago,email,contrasenia,representante,activos)"
-                            + " VALUES(\'"+name+"\',\'"+day+"\',\'"+email+"\',\'"+pass+"\',\'"+rep+"\',"+maxAct+");";
+                    sqlInstruccion="INSERT INTO Servicio (nombre,fechaPago,email,contrasenia,representante,maxactivos,activos)"
+                            + " VALUES(\'"+name+"\',\'"+day+"\',\'"+email+"\',\'"+pass+"\',\'"+rep+"\',"+maxAct+",0);";
                     
                     server.getResult(sqlInstruccion);
                     alertLabel.setText("Registro exitoso!!!");

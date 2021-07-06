@@ -2,6 +2,7 @@
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -16,21 +17,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class UserControl extends javax.swing.JPanel {
     private DefaultTableModel modelo;
+    private int rowSelected;
+    private int indexUser;
+
     /**
      * Creates new form UserControl
      */
     public UserControl() {
         initComponents();
-        modelo=(DefaultTableModel)tableofusers.getModel();
+        this.rowSelected=0;
+        this.indexUser=1;
+        this.modelo=(DefaultTableModel)tableofusers.getModel();
         this.llenarTable();
         
         
     }
+    
     private void llenarTable(){
-        /*String [] fila =new String[2];
-        fila[0]="Correo";
-        fila[1]="Contraseña";
-        this.modelo.addRow(fila);*/
+       
         
         Server server=Server.getInstance();
         ResultSet result=server.getResult("SELECT * FROM Clientes;");
@@ -39,13 +43,14 @@ public class UserControl extends javax.swing.JPanel {
                 while(result.next()){
                     
                     
-                    String[] row=new String[5];
+                    String[] row=new String[6];
                     //System.out.println(result.next());
-                    row[0]=result.getString(2);
-                    row[1]=result.getString(3);
-                    row[2]=result.getString(4);
-                    row[3]=result.getString(5);
-                    row[4]=result.getString(6);
+                    row[0]=String.valueOf(result.getString(1));
+                    row[1]=result.getString(2);
+                    row[2]=result.getString(3);
+                    row[3]=result.getString(4);
+                    row[4]=result.getString(5);
+                    row[5]=result.getString(6);
                     this.modelo.addRow(row);
                     
                 }
@@ -66,19 +71,11 @@ public class UserControl extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+        suscribirButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableofusers = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-
-        tableofusers.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Apellido", "Facebook", "Whatsapp", "E-mail"
-            }
-        ));
-        jScrollPane1.setViewportView(tableofusers);
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jButton1.setText("ACTUALIZAR");
@@ -88,41 +85,100 @@ public class UserControl extends javax.swing.JPanel {
             }
         });
 
+        suscribirButton.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        suscribirButton.setText("SUSCRIBIR");
+        suscribirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suscribirButtonActionPerformed(evt);
+            }
+        });
+
+        tableofusers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "No", "Nombre", "Apellido", "Facebook", "Whatsapp", "E-mail"
+            }
+        ));
+        tableofusers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableofusersMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableofusers);
+
+        jScrollPane2.setViewportView(jScrollPane1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(294, 294, 294)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 757, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(239, 239, 239)
+                        .addComponent(jButton1)
+                        .addGap(30, 30, 30)
+                        .addComponent(suscribirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(suscribirButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
         this.modelo.setRowCount(0);
         this.llenarTable();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void suscribirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suscribirButtonActionPerformed
+        // TODO add your handling code here:
+        
+        //this.modelo.ge
+        ViewSuscriptions viewSus=new ViewSuscriptions();
+        viewSus.addSuscription(this.indexUser);
+        viewSus.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        viewSus.setVisible(true);
+        
+    }//GEN-LAST:event_suscribirButtonActionPerformed
+
+    private void tableofusersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableofusersMouseClicked
+        // TODO add your handling code here:
+        this.rowSelected = tableofusers.rowAtPoint(evt.getPoint());
+        int columna = tableofusers.columnAtPoint(evt.getPoint());
+        if ((this.rowSelected > -1) && (columna > -1))
+            System.out.println("Fila: "+rowSelected);
+            //System.out.println(modelo.getValueAt(fila,columna));
+        //System.out.println("Value: "+ this.modelo.getValueAt(rowSelected, 1));
+        System.out.println("Index: "+this.modelo.getValueAt(rowSelected, 0));
+        try{
+            this.indexUser = Integer.valueOf(this.modelo.getValueAt(this.rowSelected, 0).toString());
+        }catch(Exception e){
+            System.out.println(e.getMessage());     
+        }
+        System.out.println(this.indexUser);
+    }//GEN-LAST:event_tableofusersMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton suscribirButton;
     private javax.swing.JTable tableofusers;
     // End of variables declaration//GEN-END:variables
 }
