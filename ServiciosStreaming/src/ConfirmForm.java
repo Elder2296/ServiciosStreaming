@@ -3,6 +3,7 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -68,6 +69,14 @@ public class ConfirmForm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Select Date","Error",JOptionPane.ERROR_MESSAGE);
                 }else{
                     
+                    Calendar cal=Calendar.getInstance();
+        
+                    String day2= Integer.toString(cal.get(Calendar.DATE));
+                    String month2=Integer.toString(cal.get(Calendar.MONTH)+1);
+                    String year2=Integer.toString(cal.get(Calendar.YEAR));
+                    
+                    String dt=year2+"-"+month2+"-"+day2;
+                    
                     Date fecha = (Date) calendar.getDatoFecha();
             
                     int day=fecha.getDate();
@@ -75,8 +84,8 @@ public class ConfirmForm extends javax.swing.JFrame {
                     int anio=fecha.getYear()+1900;
                     String date=anio+"-"+month+"-"+day;
                     
-                    sql="INSERT INTO Suscriptores(user,idservicios,idCliente,fecha,estado) "
-                        +"VALUES (\'"+user+"\',"+ this.idservice+","+this.idcostumer+",\'"+date+"\',\'activo\')";
+                    sql="INSERT INTO Suscriptores(user,idservicios,idCliente,fecha,estado,nexpayday) "
+                        +"VALUES (\'"+user+"\',"+ this.idservice+","+this.idcostumer+",\'"+dt+"\',\'activo\',\'"+date+"\')";
                     
                     server.getResult(sql);
                     
@@ -225,37 +234,7 @@ public class ConfirmForm extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConfirmForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConfirmForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConfirmForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConfirmForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ConfirmForm().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel alertLabel;
