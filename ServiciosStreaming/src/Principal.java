@@ -19,6 +19,8 @@ public class Principal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     public void addPanels(){
+        UserSuscribe us =new UserSuscribe();
+        panelprincipal.add("Suscriptions",us);
         RegisterUser userregister=new RegisterUser();
         panelprincipal.add("User Register",userregister);
         RegisterService services=new RegisterService();
@@ -44,11 +46,11 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelprincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
+            .addComponent(panelprincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 803, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelprincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+            .addComponent(panelprincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
         );
 
         pack();

@@ -78,13 +78,13 @@ public class ConfirmForm extends javax.swing.JFrame {
                     sql="INSERT INTO Suscriptores(user,idservicios,idCliente,fecha,estado) "
                         +"VALUES (\'"+user+"\',"+ this.idservice+","+this.idcostumer+",\'"+date+"\',\'activo\')";
                     
-                    result=server.getResult(sql);
+                    server.getResult(sql);
                     
-                    if(result.next()){
-                        sql="UPDATE Servicio SET activos = activos +"+1+" WHERE id = "+this.idservice;
-                        server.getResult(sql);
-                        dispose();
-                    }
+                    
+                    sql="UPDATE Servicio SET activos = activos +"+1+" WHERE id = "+this.idservice;
+                    server.getResult(sql);
+                    dispose();
+                    
                     
                     
             
