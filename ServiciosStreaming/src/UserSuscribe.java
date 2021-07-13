@@ -19,11 +19,18 @@ import javax.swing.table.DefaultTableModel;
 public class UserSuscribe extends javax.swing.JPanel {
     private int rowSelected;
     private DefaultTableModel model;
-    private String user="";
+    private String user;
+    private String service;
+    private String name;
+    private String lasname;
+            
     public UserSuscribe() {
         initComponents();
         this.rowSelected=0;
         this.user = "";
+        this.service="";
+        this.name="";
+        this.lasname="";
         this.model=(DefaultTableModel)suscribeTable.getModel();
         this.filltable();
     }
@@ -42,7 +49,7 @@ public class UserSuscribe extends javax.swing.JPanel {
                 +" FROM Suscriptores as S "
                 +" INNER JOIN Servicio AS Ser ON S.idservicios = Ser.id "
                 +" INNER JOIN Clientes AS C ON S.idCliente = C.id "
-                +"  ORDER BY dias ASC; ";
+                +" WHERE S.estado = \'activo\' ORDER BY dias ASC; ";
         
         ResultSet result=server.getResult(sql);
         try{
@@ -78,6 +85,13 @@ public class UserSuscribe extends javax.swing.JPanel {
         
         
     }
+    private void showpay(){
+        PayForm payform=new PayForm();
+        payform.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        payform.setLayout(this.user, this.service,this.name,this.lasname);
+        payform.setVisible(true);
+        
+    }
     
     
     /**
@@ -98,6 +112,11 @@ public class UserSuscribe extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
         jButton1.setText("Pay");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
         jButton2.setText("Deactivete");
@@ -191,12 +210,22 @@ public class UserSuscribe extends javax.swing.JPanel {
         
         try{
             this.user = this.model.getValueAt(this.rowSelected, 1).toString();
+            this.service=this.model.getValueAt(this.rowSelected, 0).toString();
+            this.name=this.model.getValueAt(this.rowSelected, 2).toString();
+            this.lasname=this.model.getValueAt(this.rowSelected, 3).toString();
+            
+            
         }catch(Exception e){
             System.out.println(e.getMessage());     
         }
         System.out.println(this.user);
         
     }//GEN-LAST:event_suscribeTableMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.showpay();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
