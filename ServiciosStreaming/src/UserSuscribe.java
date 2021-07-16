@@ -3,6 +3,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Locale;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
@@ -93,6 +94,24 @@ public class UserSuscribe extends javax.swing.JPanel {
         
     }
     
+    private void showUsers(){
+        Server server = Server.getInstance();
+        String sql = "SELECT idservicios FROM Suscriptores WHERE user = \'"+this.user+"\';";
+        ResultSet result = server.getResult(sql);
+        
+        try{
+            if(result.next()){
+                ShowUsers show = new ShowUsers(result.getInt(1));
+                show.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                show.setVisible(true);
+            }
+            
+        
+        }catch(SQLException ex){
+            
+        
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -109,6 +128,7 @@ public class UserSuscribe extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         suscribeTable = new javax.swing.JTable();
         contactButton = new javax.swing.JButton();
+        showUsersButton = new javax.swing.JButton();
 
         jButton1.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
         jButton1.setText("Pay");
@@ -120,6 +140,11 @@ public class UserSuscribe extends javax.swing.JPanel {
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
         jButton2.setText("Deactivete");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         updateButton.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
         updateButton.setText("Update");
@@ -153,37 +178,51 @@ public class UserSuscribe extends javax.swing.JPanel {
             }
         });
 
+        showUsersButton.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
+        showUsersButton.setText("Show Users");
+        showUsersButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showUsersButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(contactButton, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(contactButton, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(127, 127, 127)
+                        .addComponent(showUsersButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(31, 31, 31)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(updateButton)
                     .addComponent(contactButton))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(showUsersButton)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -227,12 +266,33 @@ public class UserSuscribe extends javax.swing.JPanel {
         this.showpay();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int opt = JOptionPane.showConfirmDialog(this, "Seguro que quiere desactivar a: "+this.name+" "+this.lasname);
+        System.out.println("option: "+opt);
+        if(opt == 0){
+            Deactivate deactivate= new Deactivate();
+            if(deactivate.deactivateSuscription(this.user)){
+                JOptionPane.showMessageDialog(this, "Process succesful");
+            }
+            
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void showUsersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showUsersButtonActionPerformed
+        // TODO add your handling code here:
+        
+        this.showUsers();
+    }//GEN-LAST:event_showUsersButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton contactButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton showUsersButton;
     private javax.swing.JTable suscribeTable;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables

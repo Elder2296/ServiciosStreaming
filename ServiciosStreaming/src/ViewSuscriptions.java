@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author losa
  */
-public class ViewSuscriptions extends javax.swing.JFrame {
+public class ViewSuscriptions extends javax.swing.JPanel {
     private DefaultTableModel model;
     private int rowSelected;
     private int indexService;
@@ -28,7 +28,7 @@ public class ViewSuscriptions extends javax.swing.JFrame {
         suscribeButton.setVisible(false);
         model=(DefaultTableModel)tableServices.getModel();
         llenarTable();
-        setLocationRelativeTo(null);
+        
         
     }
     private void llenarTable(){
@@ -83,8 +83,8 @@ public class ViewSuscriptions extends javax.swing.JFrame {
                     System.out.println("Si se puede agregar");
                     ConfirmForm confirm= new ConfirmForm();
                     confirm.setData(this.indexCustomer, this.indexService);
-                    confirm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                    dispose();
+                    /*confirm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    dispose();*/
                     confirm.setVisible(true);
                     
                     
