@@ -21,6 +21,10 @@ public class Principal extends javax.swing.JFrame {
     public void addPanels(){
         UserSuscribe us =new UserSuscribe();
         panelprincipal.add("Suscriptions",us);
+        
+        ShowServices ss = new ShowServices();
+        panelprincipal.add("Services",ss);
+        
         RegisterUser userregister=new RegisterUser();
         panelprincipal.add("User Register",userregister);
         RegisterService services=new RegisterService();

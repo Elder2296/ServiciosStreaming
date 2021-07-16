@@ -1,4 +1,5 @@
 
+import java.awt.Dimension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
@@ -13,22 +14,32 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author losa
  */
-public class ViewSuscriptions extends javax.swing.JPanel {
+public class ViewSuscriptions extends javax.swing.JFrame {
     private DefaultTableModel model;
     private int rowSelected;
     private int indexService;
     private int indexCustomer;
+    private int idservice;
     /**
      * Creates new form ViewSuscriptions
      */
     public ViewSuscriptions() {
-        this.rowSelected=0;
+        
         initComponents();
+        
+        ShowServices ss = new ShowServices();
+        ss.setPreferredSize(new Dimension(300,400));
+        this.getContentPane().add(ss);
+        this.add(ss);
+        
+        this.rowSelected=0;
+        this.idservice=1;
+        
         nameLabel.setVisible(false);
         suscribeButton.setVisible(false);
         model=(DefaultTableModel)tableServices.getModel();
         llenarTable();
-        
+        setLocationRelativeTo(null);
         
     }
     private void llenarTable(){
@@ -64,7 +75,7 @@ public class ViewSuscriptions extends javax.swing.JPanel {
         
         try{
             if(result.next()){
-                nameLabel.setText(result.getNString(1)+result.getNString(2));
+                nameLabel.setText(result.getNString(1)+" "+result.getNString(2));
                 nameLabel.setVisible(true);
                 suscribeButton.setVisible(true);
             }
@@ -83,8 +94,8 @@ public class ViewSuscriptions extends javax.swing.JPanel {
                     System.out.println("Si se puede agregar");
                     ConfirmForm confirm= new ConfirmForm();
                     confirm.setData(this.indexCustomer, this.indexService);
-                    /*confirm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                    dispose();*/
+                    confirm.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    dispose();
                     confirm.setVisible(true);
                     
                     
@@ -110,6 +121,7 @@ public class ViewSuscriptions extends javax.swing.JPanel {
         tableServices = new javax.swing.JTable();
         suscribeButton = new javax.swing.JButton();
         nameLabel = new javax.swing.JLabel();
+        viewUserButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,7 +130,7 @@ public class ViewSuscriptions extends javax.swing.JPanel {
 
             },
             new String [] {
-                "No.", "Tipo de Servicios", "Activos", "Disponibilidad"
+                "No.", "Tipo de Servicios", "Max", "Activos"
             }
         ));
         tableServices.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -128,8 +140,8 @@ public class ViewSuscriptions extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tableServices);
 
-        suscribeButton.setFont(new java.awt.Font("Dialog", 0, 28)); // NOI18N
-        suscribeButton.setText("SUSCRIBIR");
+        suscribeButton.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        suscribeButton.setText("Suscribe");
         suscribeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 suscribeButtonActionPerformed(evt);
@@ -139,63 +151,79 @@ public class ViewSuscriptions extends javax.swing.JPanel {
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        viewUserButton.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        viewUserButton.setText("View Users");
+        viewUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewUserButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(268, 268, 268)
-                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(suscribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(287, 287, 287))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(viewUserButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(suscribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(202, 202, 202))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(suscribeButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(suscribeButton)
+                    .addComponent(viewUserButton))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableServicesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableServicesMouseClicked
-        // TODO add your handling code here:
         this.rowSelected = tableServices.rowAtPoint(evt.getPoint());
-        int columna = tableServices.columnAtPoint(evt.getPoint());
-        if ((this.rowSelected > -1) && (columna > -1))
-            System.out.println("Fila: "+rowSelected);
-            //System.out.println(modelo.getValueAt(fila,columna));
-        //System.out.println("Value: "+ this.modelo.getValueAt(rowSelected, 1));
-        System.out.println("Index: "+this.model.getValueAt(rowSelected, 0));
+
         try{
-            this.indexService = Integer.valueOf(this.model.getValueAt(this.rowSelected, 0).toString());
+
+            this.idservice= Integer.parseInt( this.model.getValueAt(this.rowSelected, 0).toString());
+
         }catch(Exception e){
-            System.out.println(e.getMessage());     
+            System.out.println(e.getMessage());
         }
-        System.out.println(this.indexService);
+
     }//GEN-LAST:event_tableServicesMouseClicked
+
+    private void viewUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewUserButtonActionPerformed
+        // TODO add your handling code here:
+
+        ShowUsers show = new ShowUsers(this.idservice);
+        show.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        show.setVisible(true);
+    }//GEN-LAST:event_viewUserButtonActionPerformed
 
     private void suscribeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suscribeButtonActionPerformed
         // TODO add your handling code here:
-        
-        this.Suscribe();
-        
-        //System.out.println("indice: "+this.indexService);
-        
+        dispose();
+        ConfirmForm cf = new ConfirmForm();
+        cf.setData(indexCustomer, idservice);
+        cf.dataLogin(idservice);
+        cf.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        cf.setVisible(true);
     }//GEN-LAST:event_suscribeButtonActionPerformed
 
     /**
@@ -208,5 +236,6 @@ public class ViewSuscriptions extends javax.swing.JPanel {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton suscribeButton;
     private javax.swing.JTable tableServices;
+    private javax.swing.JButton viewUserButton;
     // End of variables declaration//GEN-END:variables
 }
