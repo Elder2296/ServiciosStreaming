@@ -30,19 +30,19 @@ public class ShowServices extends javax.swing.JPanel {
     private void fillTable(){
         Server server = Server.getInstance();
         
-        String sql = "SELECT id, nombre, maxactivos, activos FROM Servicio;";
+        String sql = "SELECT id, nombre,fechaPago, maxactivos, activos FROM Servicio ORDER BY fechaPago ASC;";
         
         ResultSet result = server.getResult(sql);
         
         try{
             while(result.next()){
-                String[] row = new String[4];
+                String[] row = new String[5];
                 
                 row[0] = result.getString(1);
                 row[1] = result.getString(2);
                 row[2] = result.getString(3);
                 row[3] = result.getString(4);
-                
+                row[4] = result.getString(5);
                 this.model.addRow(row);
                 
                 
@@ -75,7 +75,7 @@ public class ShowServices extends javax.swing.JPanel {
 
             },
             new String [] {
-                "No.", "Tipo de Servicios", "Max", "Activos"
+                "No.", "Tipo de Servicios", "Pago cada", "Max", "Activos"
             }
         ));
         tableServices.addMouseListener(new java.awt.event.MouseAdapter() {

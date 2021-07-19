@@ -135,7 +135,7 @@ public class RegisterService extends javax.swing.JPanel {
         emailField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         typeService.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        typeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elejir Servicio", "Disney Plus", "Spotify", "Netflix" }));
+        typeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elejir Servicio", "Disney Plus", "Spotify", "Netflix", "HBO Max" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -156,7 +156,6 @@ public class RegisterService extends javax.swing.JPanel {
                                 .addGap(408, 408, 408)
                                 .addComponent(typeService, 0, 168, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(alertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(51, 51, 51))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
