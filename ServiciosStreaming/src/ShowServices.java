@@ -69,6 +69,7 @@ public class ShowServices extends javax.swing.JPanel {
         viewUserButton = new javax.swing.JButton();
         suscribeButton = new javax.swing.JButton();
         nameLabel = new javax.swing.JLabel();
+        suscribeButton1 = new javax.swing.JButton();
 
         tableServices.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,35 +100,50 @@ public class ShowServices extends javax.swing.JPanel {
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        suscribeButton1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        suscribeButton1.setText("Update");
+        suscribeButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suscribeButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(176, 176, 176)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(nameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(viewUserButton)
-                        .addGap(61, 61, 61)
-                        .addComponent(suscribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(190, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(176, 176, 176)
+                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(92, 92, 92)
+                                .addComponent(viewUserButton)
+                                .addGap(28, 28, 28)
+                                .addComponent(suscribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(suscribeButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 129, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viewUserButton)
-                    .addComponent(suscribeButton))
+                    .addComponent(suscribeButton)
+                    .addComponent(suscribeButton1))
                 .addGap(19, 19, 19))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -154,11 +170,18 @@ public class ShowServices extends javax.swing.JPanel {
         show.setVisible(true);
     }//GEN-LAST:event_viewUserButtonActionPerformed
 
+    private void suscribeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suscribeButton1ActionPerformed
+        // TODO add your handling code here:
+        this.model.setRowCount(0);
+        this.fillTable();
+    }//GEN-LAST:event_suscribeButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton suscribeButton;
+    private javax.swing.JButton suscribeButton1;
     private javax.swing.JTable tableServices;
     private javax.swing.JButton viewUserButton;
     // End of variables declaration//GEN-END:variables
