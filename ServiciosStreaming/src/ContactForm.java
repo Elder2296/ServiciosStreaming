@@ -1,3 +1,10 @@
+
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import javax.swing.ImageIcon;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,14 +22,23 @@ public class ContactForm extends javax.swing.JFrame {
      */
     public ContactForm() {
         initComponents();
+        this.messageBox.setLineWrap(true);
+        this.messageBox.setWrapStyleWord(true);
         setLocationRelativeTo(null);
+        this.PonerImagen();
     }
-    public void filled(String user){
-        Contact contact= new Contact(user);
+    public void filled(String user, int opt){
+        Contact contact= new Contact();
+        contact.workData(user, opt);
         this.facebookField.setText(contact.getUser());
         this.wasapField.setText(contact.getWhatsapp());
         this.messageBox.setText(contact.getMessage());
     }
+    private void PonerImagen(){
+        ImageIcon imageIcon=new ImageIcon(new ImageIcon("./img/copy.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        copyLabel.setIcon(imageIcon);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,6 +55,7 @@ public class ContactForm extends javax.swing.JFrame {
         facebookField = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         wasapField = new javax.swing.JLabel();
+        copyLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,13 +76,22 @@ public class ContactForm extends javax.swing.JFrame {
         wasapField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         wasapField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        copyLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        copyLabel.setText("Copy");
+        copyLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                copyLabelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
@@ -74,16 +100,16 @@ public class ContactForm extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(facebookField, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(34, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(143, 143, 143)
+                .addComponent(copyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(facebookField, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -92,12 +118,25 @@ public class ContactForm extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(wasapField, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(copyLabel)
+                .addGap(17, 17, 17))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void copyLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_copyLabelMouseClicked
+        // TODO add your handling code here:
+        String textcopy = messageBox.getText();
+        StringSelection ss = new StringSelection(textcopy);
+        Toolkit tool = Toolkit.getDefaultToolkit();
+        Clipboard clip = tool.getSystemClipboard();
+        clip.setContents(ss,null);
+        
+        dispose();
+    }//GEN-LAST:event_copyLabelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -105,6 +144,7 @@ public class ContactForm extends javax.swing.JFrame {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel copyLabel;
     private javax.swing.JLabel facebookField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

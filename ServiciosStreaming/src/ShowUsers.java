@@ -2,6 +2,7 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
+import Script.Generator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,16 +17,33 @@ import javax.swing.table.DefaultTableModel;
 public class ShowUsers extends javax.swing.JFrame {
     private DefaultTableModel model1;
     private DefaultTableModel model2;
+    private int index;
+    private String user;
+    private int rowSelected;
     /**
      * Creates new form ShowUsers
      */
     public ShowUsers(int id) {
+        this.user="";
+        this.rowSelected = 1;
         initComponents();
         this.model1 = (DefaultTableModel)serviceTable.getModel();
         this.model2 = (DefaultTableModel)suscriptorsTable.getModel();
         fillTipeService(id);
         this.fillTableSuscriptors(id);
+        this.index= id;
         setLocationRelativeTo(null);
+    }
+    
+    private void changePassword(){
+        String sql = "UPDATE Servicio SET contrasenia = \'"+newpasswordLabel.getText()+"\' WHERE id = ";
+        
+        Server server = Server.getInstance();
+        
+        server.getResult(sql);
+         this.model1.setRowCount(0);
+        fillTipeService(this.index);
+        
     }
     
     private void fillTipeService(int id){
@@ -88,6 +106,17 @@ public class ShowUsers extends javax.swing.JFrame {
         
     
     }
+    private void getUser(){
+        
+        ContactForm contact=new ContactForm();
+        contact.filled(this.user,2);
+        contact.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        contact.setVisible(true);
+        
+        
+        
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,9 +131,10 @@ public class ShowUsers extends javax.swing.JFrame {
         serviceTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         suscriptorsTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        generatorButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        newpasswordLabel = new javax.swing.JLabel();
+        contactButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,17 +172,40 @@ public class ShowUsers extends javax.swing.JFrame {
                 "usuario", "Facebook", "Whatsapp", "Status"
             }
         ));
+        suscriptorsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                suscriptorsTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(suscriptorsTable);
 
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton1.setText("Generate Password");
+        generatorButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        generatorButton.setText("Generate Password");
+        generatorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generatorButtonActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jButton2.setText("Change Password");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 51, 0));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        newpasswordLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        newpasswordLabel.setForeground(new java.awt.Color(255, 51, 0));
+        newpasswordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        contactButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        contactButton.setText("Contact");
+        contactButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contactButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,44 +217,90 @@ public class ShowUsers extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)
                     .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addComponent(jButton1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(132, Short.MAX_VALUE)
+                .addComponent(generatorButton)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(contactButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(newpasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addContainerGap())
+                .addGap(137, 137, 137))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(jButton2)
+                    .addComponent(newpasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(generatorButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contactButton)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void generatorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatorButtonActionPerformed
+        // TODO add your handling code here:
+        Generator generator = Generator.getInstance();
+        newpasswordLabel.setText(generator.getNewpassword());
+    }//GEN-LAST:event_generatorButtonActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.changePassword();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void contactButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactButtonActionPerformed
+        // TODO add your handling code here:
+        this.getUser();
+        
+    }//GEN-LAST:event_contactButtonActionPerformed
+
+    private void suscriptorsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_suscriptorsTableMouseClicked
+        // TODO add your handling code here:
+        
+        this.rowSelected = suscriptorsTable.rowAtPoint(evt.getPoint());
+        
+        int columna = suscriptorsTable.columnAtPoint(evt.getPoint());
+        if ((this.rowSelected > -1) && (columna > -1))
+            System.out.println("Fila: "+rowSelected);
+            //System.out.println(modelo.getValueAt(fila,columna));
+        //System.out.println("Value: "+ this.modelo.getValueAt(rowSelected, 1));
+        //System.out.println("Index: "+this.modelo.getValueAt(rowSelected, 0));
+        
+        try{
+            this.user = this.model2.getValueAt(this.rowSelected, 0).toString();
+            
+            
+            
+        }catch(Exception e){
+            System.out.println(e.getMessage());     
+        }
+        System.out.println(this.user);
+    }//GEN-LAST:event_suscriptorsTableMouseClicked
 
     /**
      * @param args the command line arguments
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton contactButton;
+    private javax.swing.JButton generatorButton;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel newpasswordLabel;
     private javax.swing.JTable serviceTable;
     private javax.swing.JTable suscriptorsTable;
     // End of variables declaration//GEN-END:variables

@@ -124,7 +124,7 @@ public class UserSuscribe extends javax.swing.JPanel {
     private void getUser(){
         
         ContactForm contact=new ContactForm();
-        contact.filled(this.user);
+        contact.filled(this.user,1);
         contact.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         contact.setVisible(true);
         
