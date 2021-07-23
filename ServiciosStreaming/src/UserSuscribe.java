@@ -40,7 +40,7 @@ public class UserSuscribe extends javax.swing.JPanel {
         this.model=(DefaultTableModel)suscribeTable.getModel();
         this.filltable();
     }
-    private void filter(String pattern){
+    private void filter(String pattern,String type){
         Server server=Server.getInstance();
         Calendar calendar=Calendar.getInstance();
         
@@ -55,7 +55,8 @@ public class UserSuscribe extends javax.swing.JPanel {
                 +" FROM Suscriptores as S "
                 +" INNER JOIN Servicio AS Ser ON S.idservicios = Ser.id "
                 +" INNER JOIN Clientes AS C ON S.idCliente = C.id "
-                +" WHERE S.user LIKE \""+pattern+"%\" ";
+                +" WHERE " + type +" LIKE \""+pattern+"%\" ";
+        
         
         ResultSet result=server.getResult(sql);
         try{
@@ -243,7 +244,7 @@ public class UserSuscribe extends javax.swing.JPanel {
             }
         });
 
-        searchFor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Search for", "User", "Name", "Last Name" }));
+        searchFor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Search for", "User", "Name" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -366,15 +367,24 @@ public class UserSuscribe extends javax.swing.JPanel {
         System.out.println(searchField.getText());
         String typeSearch = searchFor.getSelectedItem().toString();
         
-        
+        System.out.println(typeSearch);
         
         if(searchField.getText().equals("")){
             this.model.setRowCount(0);
             this.filltable();
         }else{
-            this.model.setRowCount(0);
-            this.filter(searchField.getText());
+            if(!typeSearch.equals("Search for")){
+                this.model.setRowCount(0);
+                String opt = "";
+                if (typeSearch.equals("User")){
+                    opt ="S.user";
+                }else if(typeSearch.equals("Name")){
+                    opt = "C.nombre1";
+                }
+                this.filter(searchField.getText(),opt);
  
+            }
+            
         }
     }//GEN-LAST:event_searchFieldKeyReleased
 

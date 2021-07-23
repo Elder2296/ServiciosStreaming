@@ -36,12 +36,12 @@ public class ShowUsers extends javax.swing.JFrame {
     }
     
     private void changePassword(){
-        String sql = "UPDATE Servicio SET contrasenia = \'"+newpasswordLabel.getText()+"\' WHERE id = ";
+        String sql = "UPDATE Servicio SET contrasenia = \'"+newpasswordLabel.getText()+"\' WHERE id = "+this.index;
         
         Server server = Server.getInstance();
         
         server.getResult(sql);
-         this.model1.setRowCount(0);
+        this.model1.setRowCount(0);
         fillTipeService(this.index);
         
     }
