@@ -1,0 +1,429 @@
+
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author losa
+ */
+public class FormUpdateService extends javax.swing.JFrame {
+    private int idsuscription;
+    private int idCustomer;
+    private int idService;
+    private String servicio;
+    /**
+     * Creates new form FormUpdateService
+     */
+    public FormUpdateService( String user) {
+        initComponents();
+        setLocationRelativeTo(null);
+        this.fillFields(user);
+    }
+    private void fillFields(String user){
+        String sql = "SELECT C.nombre1, C.apellido1, C.UsuarioFacebook, C.whatsapp, C.email, Ser.nombre, S.nexpayday, S.id, S.idCliente, Ser.nombre, S.idservicios  "
+                        + "FROM Suscriptores AS S"
+                        + " INNER JOIN Clientes AS C ON C.id = S.idCliente "
+                        + " INNER JOIN Servicio AS Ser ON Ser.id = S.idservicios"
+                        + "   WHERE user =  \'"+user+"\';";
+       
+        Server server = Server.getInstance();
+        ResultSet result = server.getResult(sql);
+        
+        try{
+            if(result.next()){
+                this.idsuscription = result.getInt(8);
+                userField.setText(user);
+                nameField.setText(result.getString(1));
+                lastnameField.setText(result.getString(2));
+                facebookField.setText(result.getString(3));
+                whatsappField.setText(result.getString(4));
+                emailField.setText(result.getString(5));
+                serviceField.setText(result.getString(6));
+                Date date = result.getDate(7);
+                dateFiled.setDatoFecha(date);
+                this.idCustomer = result.getInt(9);
+                this.servicio = result.getString(10);
+                this.idService = result.getInt(11);
+                
+                
+                
+            }
+        
+        }catch(SQLException ex){
+        }
+        
+        
+        
+    }
+    private void updateSuscription(String user, String name, String lastname, String facebook, String whatsapp, String email, String service, String date  ){
+        
+        Server server = Server.getInstance();
+        
+        int result = server.getResultUpdate(user,this.idsuscription);
+        System.out.println("Resultado de la actualizacion: "+result);
+        
+        
+        
+        System.out.println("resultado: "+result);
+        if(result > 0){
+                
+            String sql = "UPDATE Clientes  SET nombre1 = \'"+name+"\', apellido1 = \'"+lastname+"\', UsuarioFacebook = \'"+facebook+"\',"
+                        + "whatsapp = \'"+whatsapp+"\', email =  \'"+email+"\' WHERE id = "+this.idCustomer+";";
+            server.getResult(sql);
+                
+            sql = "UPDATE Suscriptores SET nexpayday = \'"+date+"\' WHERE id = "+this.idsuscription+";";
+            JOptionPane.showMessageDialog(null, "Update of next pay day succesfull");
+            server.getResult(sql);
+            if(!this.servicio.equals(service)){
+                this.searchService(service);
+            }
+            dispose();
+                
+                
+        }else{
+            userAlert.setText("User exist!!!");
+        }
+            
+        
+       
+        
+        
+    }
+    private void searchService(String service){
+        
+        String sql = "SELECT id FROM Servicio WHERE maxactivos - activos > 0 AND nombre = \'"+service+"\';";
+        Server server = Server.getInstance();
+        
+        ResultSet result = server.getResult(sql);
+        
+        try{
+            if(result.next()){
+                int idservice = result.getInt(1);
+                
+                sql = "UPDATE Suscriptores SET idservicios = "+idservice+" WHERE id = "+this.idsuscription+";";
+                server.getResult(sql);
+                
+                sql = "UPDATE Servicio SET activos = activos +1 WHERE id = "+idservice+";";
+                server.getResult(sql);
+                
+                sql = "UPDATE Servicio SET activos = activos -1 WHERE id = "+this.idService+";";
+                server.getResult(sql);
+                
+                JOptionPane.showMessageDialog(null, "Update of service succesfull");
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "No hay ningun servicio de "+service+" disponible.");
+            }
+            
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+                
+                
+        
+    
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        userField = new javax.swing.JTextField();
+        lastnameField = new javax.swing.JTextField();
+        nameField = new javax.swing.JTextField();
+        whatsappField = new javax.swing.JTextField();
+        emailField = new javax.swing.JTextField();
+        facebookField = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        serviceField = new javax.swing.JLabel();
+        changeService = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        dateFiled = new rojeru_san.componentes.RSDateChooser();
+        userAlert = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel1.setText("User:");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel2.setText("Nombre:");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel3.setText("Last Name:");
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel4.setText("Facebook:");
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel5.setText("Whatsapp:");
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel6.setText("E-mail:");
+
+        userField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        userField.setForeground(new java.awt.Color(102, 102, 102));
+        userField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        lastnameField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        lastnameField.setForeground(new java.awt.Color(102, 102, 102));
+        lastnameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        nameField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        nameField.setForeground(new java.awt.Color(102, 102, 102));
+        nameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        whatsappField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        whatsappField.setForeground(new java.awt.Color(102, 102, 102));
+        whatsappField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        emailField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        emailField.setForeground(new java.awt.Color(102, 102, 102));
+        emailField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        facebookField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        facebookField.setForeground(new java.awt.Color(102, 102, 102));
+        facebookField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jButton1.setFont(new java.awt.Font("Dialog", 2, 24)); // NOI18N
+        jButton1.setText("UPDATE");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Dialog", 2, 24)); // NOI18N
+        jButton2.setText("CANCEL");
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel7.setText("Service: ");
+
+        serviceField.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        serviceField.setForeground(new java.awt.Color(102, 102, 102));
+        serviceField.setText("Disney Plus");
+
+        changeService.setFont(new java.awt.Font("Dialog", 2, 16)); // NOI18N
+        changeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "change service", "Disney Plus", "Netflix", "Spotify", "HBO Max" }));
+        changeService.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                changeServiceItemStateChanged(evt);
+            }
+        });
+        changeService.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                changeServiceMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                changeServiceMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                changeServiceMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                changeServiceMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                changeServiceMouseEntered(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        jLabel8.setText("Next pay date:");
+
+        dateFiled.setColorBackground(new java.awt.Color(102, 102, 102));
+        dateFiled.setColorForeground(new java.awt.Color(102, 102, 102));
+
+        userAlert.setFont(new java.awt.Font("Dialog", 2, 10)); // NOI18N
+        userAlert.setForeground(new java.awt.Color(204, 0, 0));
+        userAlert.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lastnameField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(userField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(whatsappField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(emailField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(serviceField, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(changeService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(facebookField)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(dateFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGap(89, 89, 89))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
+                        .addGap(89, 89, 89)))
+                .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(userAlert, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(77, 77, 77))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addComponent(userAlert)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lastnameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(facebookField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(whatsappField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(emailField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(serviceField)
+                    .addComponent(changeService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(dateFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void changeServiceMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeServiceMouseReleased
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_changeServiceMouseReleased
+
+    private void changeServiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeServiceMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_changeServiceMouseClicked
+
+    private void changeServiceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeServiceMousePressed
+        // TODO add your handling code here:
+     
+        
+        
+        
+    }//GEN-LAST:event_changeServiceMousePressed
+
+    private void changeServiceMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeServiceMouseEntered
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_changeServiceMouseEntered
+
+    private void changeServiceMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeServiceMouseExited
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_changeServiceMouseExited
+
+    private void changeServiceItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_changeServiceItemStateChanged
+        // TODO add your handling code here:
+        String serviceSelected = this.changeService.getSelectedItem().toString();
+        serviceField.setText(serviceSelected);
+    }//GEN-LAST:event_changeServiceItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        java.util.Date fecha = (java.util.Date) dateFiled.getDatoFecha();
+            
+        int day=fecha.getDate();
+        int month=fecha.getMonth()+1;
+        int anio=fecha.getYear()+1900;
+        String date=anio+"-"+month+"-"+day;
+        System.out.println("Fecha: "+date);
+        this.updateSuscription(userField.getText(), nameField.getText(), lastnameField.getText(), facebookField.getText(), whatsappField.getText(),
+                emailField.getText(), serviceField.getText(), date);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> changeService;
+    private rojeru_san.componentes.RSDateChooser dateFiled;
+    private javax.swing.JTextField emailField;
+    private javax.swing.JTextField facebookField;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JTextField lastnameField;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JLabel serviceField;
+    private javax.swing.JLabel userAlert;
+    private javax.swing.JTextField userField;
+    private javax.swing.JTextField whatsappField;
+    // End of variables declaration//GEN-END:variables
+}

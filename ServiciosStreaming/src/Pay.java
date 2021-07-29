@@ -21,7 +21,7 @@ public class Pay {
     }
     public boolean processPay(String user,String service,Double amount, String today){
         Server server=Server.getInstance();
-        String sql="SELECT S.nexpayday FROM Suscriptores AS S WHERE S.user = \'"+user+"\'";
+        String sql="SELECT S.nexpayday,S.id FROM Suscriptores AS S WHERE S.user = \'"+user+"\'";
         ResultSet result= server.getResult(sql);
         
         try{
@@ -31,8 +31,8 @@ public class Pay {
                 int abono = this.getAbono(amount, service);
               
                 
-                sql="INSERT INTO Pay (user,service,amount,datepay) "
-                        + "VALUES (\'"+user+"\',\'"+service+"\',"+amount+",\'"+today+"\');";
+                sql="INSERT INTO Pay (idSuscription,service,amount,datepay) "
+                        + "VALUES ("+result.getInt(2)+",\'"+service+"\',"+amount+",\'"+today+"\');";
                 
                 System.out.println(sql);
                 server.getResult(sql);

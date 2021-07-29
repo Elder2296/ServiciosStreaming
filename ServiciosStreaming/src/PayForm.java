@@ -29,7 +29,29 @@ public class PayForm extends javax.swing.JFrame {
         this.nameLabel.setText(name + " "+lastname);
         
     }
-
+    
+    public int payState(){
+                    
+        java.util.Date fecha = (java.util.Date) calendar.getDatoFecha();
+            
+        int day=fecha.getDate();
+        int month=fecha.getMonth()+1;
+        int anio=fecha.getYear()+1900;
+        String date=anio+"-"+month+"-"+day;
+        
+        Pay pay = new Pay();
+        Boolean process = pay.processPay(this.userField.getText(), this.serviceLabel.getText(), Double.parseDouble(amoutField.getText()), date);
+        if(process){
+            JOptionPane.showMessageDialog(this, "Pay processed");
+            dispose();
+            return 0;
+        }else{
+            JOptionPane.showMessageDialog(this, "Failed Process");
+            return 1;
+        }
+    
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,23 +189,8 @@ public class PayForm extends javax.swing.JFrame {
     private void payButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payButtonActionPerformed
         // TODO add your handling code here:
         
-                    
-        java.util.Date fecha = (java.util.Date) calendar.getDatoFecha();
-            
-        int day=fecha.getDate();
-        int month=fecha.getMonth()+1;
-        int anio=fecha.getYear()+1900;
-        String date=anio+"-"+month+"-"+day;
         
-        Pay pay = new Pay();
-        Boolean process = pay.processPay(this.userField.getText(), this.serviceLabel.getText(), Double.parseDouble(amoutField.getText()), date);
-        if(process){
-            JOptionPane.showMessageDialog(this, "Pay processed");
-            dispose();
-        }else{
-            JOptionPane.showMessageDialog(this, "Failed Process");
-        }
-        
+        this.payState();
         
     }//GEN-LAST:event_payButtonActionPerformed
 

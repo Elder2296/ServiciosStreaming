@@ -23,14 +23,14 @@ public class ShowServices extends javax.swing.JPanel {
         this.rowSelected=0;
         this.idservice=1;
         this.model = (DefaultTableModel)this.tableServices.getModel();
-        this.fillTable();
+        this.fillTable("id");
         
     }
     
-    private void fillTable(){
+    private void fillTable(String order){
         Server server = Server.getInstance();
         
-        String sql = "SELECT id, nombre,fechaPago, maxactivos, activos FROM Servicio ORDER BY fechaPago ASC;";
+        String sql = "SELECT id, nombre,fechaPago, maxactivos, activos FROM Servicio ORDER BY "+ order +" ASC;";
         
         ResultSet result = server.getResult(sql);
         
@@ -52,7 +52,7 @@ public class ShowServices extends javax.swing.JPanel {
         }catch(SQLException ex){
         
         }
-        
+        this.tableServices.setDefaultRenderer(Object.class, new Painter2() );
     }
 
     /**
@@ -68,8 +68,8 @@ public class ShowServices extends javax.swing.JPanel {
         tableServices = new javax.swing.JTable();
         viewUserButton = new javax.swing.JButton();
         suscribeButton = new javax.swing.JButton();
-        nameLabel = new javax.swing.JLabel();
-        suscribeButton1 = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
+        orderSelect = new javax.swing.JComboBox<>();
 
         tableServices.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,15 +96,24 @@ public class ShowServices extends javax.swing.JPanel {
 
         suscribeButton.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         suscribeButton.setText("Suscribe");
-
-        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        nameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        suscribeButton1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        suscribeButton1.setText("Update");
-        suscribeButton1.addActionListener(new java.awt.event.ActionListener() {
+        suscribeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                suscribeButton1ActionPerformed(evt);
+                suscribeButtonActionPerformed(evt);
+            }
+        });
+
+        updateButton.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
+
+        orderSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Order", "Service", "Day pay" }));
+        orderSelect.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                orderSelectItemStateChanged(evt);
             }
         });
 
@@ -113,38 +122,35 @@ public class ShowServices extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(176, 176, 176)
-                                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(92, 92, 92)
-                                .addComponent(viewUserButton)
-                                .addGap(28, 28, 28)
-                                .addComponent(suscribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(suscribeButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 129, Short.MAX_VALUE)))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(viewUserButton)
+                .addGap(18, 18, 18)
+                .addComponent(suscribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(115, 115, 115))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(299, 299, 299)
+                .addComponent(orderSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(orderSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viewUserButton)
                     .addComponent(suscribeButton)
-                    .addComponent(suscribeButton1))
-                .addGap(19, 19, 19))
+                    .addComponent(updateButton))
+                .addGap(40, 40, 40))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -170,19 +176,34 @@ public class ShowServices extends javax.swing.JPanel {
         show.setVisible(true);
     }//GEN-LAST:event_viewUserButtonActionPerformed
 
-    private void suscribeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suscribeButton1ActionPerformed
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
         this.model.setRowCount(0);
-        this.fillTable();
-    }//GEN-LAST:event_suscribeButton1ActionPerformed
+        this.fillTable("id");
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void orderSelectItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_orderSelectItemStateChanged
+        // TODO add your handling code here:
+        String option =  orderSelect.getSelectedItem().toString();
+        this.model.setRowCount(0);
+        System.out.println("Option: "+option);
+        if(option.equals("Select Order")){ this.fillTable("id");}
+        else if (option.equals("Service")){ this.fillTable("nombre"); }
+        else if(option.equals("Day pay")){ this.fillTable("fechaPago");}
+        
+    }//GEN-LAST:event_orderSelectItemStateChanged
+
+    private void suscribeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suscribeButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_suscribeButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel nameLabel;
+    private javax.swing.JComboBox<String> orderSelect;
     private javax.swing.JButton suscribeButton;
-    private javax.swing.JButton suscribeButton1;
     private javax.swing.JTable tableServices;
+    private javax.swing.JButton updateButton;
     private javax.swing.JButton viewUserButton;
     // End of variables declaration//GEN-END:variables
 }

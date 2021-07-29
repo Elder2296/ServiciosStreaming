@@ -35,9 +35,37 @@ public class Painter extends DefaultTableCellRenderer {
         }else{
             if(row % 2 == 0){
                 setBackground(Color.GRAY);
-            }else{
+            }else{  
                 setBackground(Color.CYAN);
             }
+            
+        }
+        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    }
+    
+}
+
+
+class Painter2 extends DefaultTableCellRenderer {
+    
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,boolean isSelected,boolean hasFocus,int row, int column){
+        String name =table.getValueAt(row, 1).toString();
+        
+        if(name.equals("Netflix")){
+        
+            setBackground(Color.RED);                             
+            
+        }else if(name.equals("Disney Plus")){
+            
+            setBackground(Color.CYAN);
+        
+        }else if(name.equals("HBO Max")){
+          
+            setBackground(Color.MAGENTA);
+        
+        }else if (name.equals("Spotify")){
+            setBackground(Color.GREEN);
             
         }
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

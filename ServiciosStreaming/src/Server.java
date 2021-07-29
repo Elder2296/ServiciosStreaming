@@ -14,10 +14,12 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 public class Server {
     private static Server server;
     private static Statement st;
+    private static PreparedStatement pst;
     
     
     private Server(){
@@ -31,8 +33,10 @@ public class Server {
                 Class.forName("org.mariadb.jdbc.Driver");
                 
                 Connection conection=null;
-                conection=DriverManager.getConnection("jdbc:mysql://localhost/ServiciosStreaming", "Losa", "brC123abc");
-                st=conection.createStatement();
+                conection = DriverManager.getConnection("jdbc:mysql://localhost/ServiciosStreaming", "Losa", "brC123abc");
+                st = conection.createStatement();
+                pst = conection.prepareStatement("UPDATE Suscriptores SET user =? WHERE id =?;");
+                //pst = (PreparedStatement) conection.createStatement();
                 
                 
                 
@@ -51,15 +55,30 @@ public class Server {
             
     }
     public ResultSet getResult(String sqlinstruction) {
+        
         try{
-            return st.executeQuery(sqlinstruction);
+           
+           return st.executeQuery(sqlinstruction);
         }catch(SQLException ex){
                 System.out.println(ex.getMessage());
-                return null;
+            return null;
             
         }
         
         
+    
+    }
+    public int getResultUpdate(String user, int idsuscription){
+        
+        try{
+            pst.setString(1, user );
+            pst.setInt(2, idsuscription);
+            return pst.executeUpdate();
+            
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            return 0;
+        }
     
     }
     
