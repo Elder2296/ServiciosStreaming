@@ -65,8 +65,8 @@ public class Contact {
     
     }
     private String getMessageUpdateData(String name,String service, String email,String pass){
-        return "ACTUALIZACION DE DATOS\n\nQue tal, "+name+" espero este bien. Disculpe el inconveniente le comparto los nuevos datos de la cuenta de"
-                + service + " Correo:"+email+"     contraseña:"+pass+"     Cualquier inconveniente me puede escribir por este medio.";
+        return "ACTUALIZACION DE DATOS\n\nQue tal, "+name+" espero este bien. Disculpe el inconveniente le comparto los nuevos datos de la cuenta de "
+                + service + " \n\nCorreo:"+email+"\ncontraseña:"+pass+"\n\nCualquier inconveniente me puede escribir por este medio.";
     }
     public String getUser(){
         return this.userFacebook;
