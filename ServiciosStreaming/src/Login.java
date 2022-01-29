@@ -6,6 +6,8 @@
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -39,6 +41,7 @@ public class Login extends javax.swing.JFrame {
         ButtonLogin = new javax.swing.JButton();
         LabelRegister = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        respaldo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,6 +72,13 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setForeground(new java.awt.Color(204, 0, 0));
 
+        respaldo.setText("Create File");
+        respaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                respaldoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,13 +102,18 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addComponent(ButtonLogin)))
+                        .addComponent(ButtonLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(147, 147, 147)
+                        .addComponent(respaldo)))
                 .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(18, 18, 18)
+                .addComponent(respaldo)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(userTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -190,6 +205,41 @@ public class Login extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_LabelRegisterMousePressed
 
+    private void respaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_respaldoActionPerformed
+        
+        try {
+            ServerOnlyne server=ServerOnlyne.getInstance();
+            /*ResultSet result=server.getResult("SELECT * FROM Servicio;");
+            
+            try{
+            
+            while(result.next()){
+            
+            String[] row=new String[4];
+            
+            row[0]=String.valueOf(result.getInt(1));
+            row[1]=result.getString(2);
+            row[2]=String.valueOf(result.getInt(7));
+            row[3]=String.valueOf(result.getInt(8));
+            //System.out.println(result.getInt(1));
+            
+            
+            
+            
+            
+            }
+            }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            
+            }*/
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_respaldoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -239,6 +289,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField passField;
+    private javax.swing.JButton respaldo;
     private javax.swing.JTextField userTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,6 +3,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 import Script.Generator;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -117,6 +120,26 @@ public class ShowUsers extends javax.swing.JFrame {
         
         
     }
+    private void getInfo(){
+        String query = "SELECT email, contrasenia FROM Servicio WHERE   id = "+this.index+";";
+        Server server = Server.getInstance();
+        ResultSet result = server.getResult(query);
+        String textcopy = "";
+        try{
+            if(result.next()){
+                textcopy = result.getString(1)+"      "+result.getString(2);
+            }
+        
+        }catch(SQLException ex){
+        }
+        
+        
+        StringSelection ss = new StringSelection(textcopy);
+        Toolkit tool = Toolkit.getDefaultToolkit();
+        Clipboard clip = tool.getSystemClipboard();
+        clip.setContents(ss,null);
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,6 +158,7 @@ public class ShowUsers extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         newpasswordLabel = new javax.swing.JLabel();
         contactButton = new javax.swing.JButton();
+        copyInfo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -207,6 +231,14 @@ public class ShowUsers extends javax.swing.JFrame {
             }
         });
 
+        copyInfo.setFont(new java.awt.Font("Dialog", 0, 8)); // NOI18N
+        copyInfo.setText("Copy info");
+        copyInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyInfoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -214,11 +246,14 @@ public class ShowUsers extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 735, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(copyInfo)
+                        .addGap(330, 330, 330)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(132, Short.MAX_VALUE)
+                .addContainerGap(204, Short.MAX_VALUE)
                 .addComponent(generatorButton)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -235,7 +270,9 @@ public class ShowUsers extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(2, 2, 2)
+                .addComponent(copyInfo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,12 +327,19 @@ public class ShowUsers extends javax.swing.JFrame {
         System.out.println(this.user);
     }//GEN-LAST:event_suscriptorsTableMouseClicked
 
+    private void copyInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyInfoActionPerformed
+        // TODO add your handling code here:
+        
+        this.getInfo();
+    }//GEN-LAST:event_copyInfoActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton contactButton;
+    private javax.swing.JButton copyInfo;
     private javax.swing.JButton generatorButton;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;

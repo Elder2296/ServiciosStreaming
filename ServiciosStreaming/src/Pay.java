@@ -63,12 +63,12 @@ public class Pay {
                 sql="UPDATE Suscriptores SET nexpayday = \'"+newpayday+"\' WHERE user = \'"+user+"\';";
                 System.out.println("PAGO HECHO CON EXITO");
                 server.getResult(sql);
-                    
+                System.out.println("El abono es de: "+abono);    
                 if(abono != 0){
-                    sql = "INSERT INTO Abonos (user,amount,state) VALUES (\'"+user+"\',"+abono+", Pendiente";
+                    sql = "INSERT INTO Abonos (user,amount,state) VALUES (\'"+user+"\',"+abono+", Pendiente);";
                 }
                 server.getResult(sql);
-                    
+                System.out.println("ABONO REALIZADO");
                     
                     
                    
@@ -101,7 +101,7 @@ public class Pay {
     private int getAbono(Double amount, String service){
         int result = 0;
         if(service.equals("Netflix")){
-            result = (int) (amount % 35.0);
+            result = (int) (amount % 35);
         }else if(service.equals("Disney Plus") || service.equals("Spotify") || service.equals("HBO Max") ){
             result = (int) (amount % 25);
         }
