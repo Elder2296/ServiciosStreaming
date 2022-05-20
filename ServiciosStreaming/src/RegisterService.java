@@ -135,7 +135,7 @@ public class RegisterService extends javax.swing.JPanel {
         emailField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         typeService.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        typeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elejir Servicio", "Disney Plus", "Spotify", "Netflix", "HBO Max" }));
+        typeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elejir Servicio", "Disney Plus", "Spotify", "Netflix", "HBO Max", "Star Plus" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

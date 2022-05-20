@@ -32,11 +32,16 @@ public class Server {
             server=new Server();
             try{
                 
-                Class.forName("org.mariadb.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 
                 Connection conection=null;
-                conection = DriverManager.getConnection("jdbc:mysql://localhost/ServiciosStreaming", "Losa", "brC123abc");
+                String url = "jdbc:mysql://localhost:3306/ServiciosStreaming";
+                String user = "Losa";
+                String pass  = "brC123abc";
+                conection = DriverManager.getConnection(url,user,pass);
                 st = conection.createStatement();
+                
+                
                 pst = conection.prepareStatement("UPDATE Suscriptores SET user =? WHERE id =?;");
                 //pst = (PreparedStatement) conection.createStatement();
                 
@@ -100,14 +105,14 @@ class ServerOnlyne{
             server=new ServerOnlyne();
             try{
                 
-                Class.forName("com.mysql.cj.jdbc.Drive").newInstance();
+                Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
                 
-                /*Connection conection=null;
-                String url = "jdbc:mysql://ugjkd1onkmyyvfte:vh0H4aBQbUcbXZVnBQOn@bvmtpurncngbraujawjj-mysql.services.clever-cloud.com:3306/bvmtpurncngbraujawjj";
-                String user = "ugjkd1onkmyyvfte";
-                String pass  = "vh0H4aBQbUcbXZVnBQOn";
+                Connection conection=null;
+                String url = "jdbc:mysql://localhost:3306/ServiciosStreaming";
+                String user = "Losa";
+                String pass  = "brC123abc";
                 conection = DriverManager.getConnection(url,user,pass);
-                st = conection.createStatement();*/
+                st = conection.createStatement();
                 //pst = conection.prepareStatement("UPDATE Suscriptores SET user =? WHERE id =?;");
                 //pst = (PreparedStatement) conection.createStatement();
                 
