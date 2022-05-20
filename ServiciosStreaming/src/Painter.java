@@ -67,6 +67,11 @@ class Painter2 extends DefaultTableCellRenderer {
         }else if (name.equals("Spotify")){
             setBackground(Color.GREEN);
             
+        }else if (name.equals("Star Plus")){
+            setBackground(Color.darkGray);
+            
+        }else{
+            setBackground(Color.ORANGE);
         }
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }

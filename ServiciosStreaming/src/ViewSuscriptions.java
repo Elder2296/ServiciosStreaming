@@ -65,6 +65,8 @@ public class ViewSuscriptions extends javax.swing.JFrame {
             System.out.println(ex.getMessage());
             
         }
+        this.tableServices.setDefaultRenderer(Object.class, new Painter2());
+        
     }
     public void addSuscription(int idCustomer){
         System.out.println("index customer: "+idCustomer);
