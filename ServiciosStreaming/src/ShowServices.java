@@ -30,7 +30,7 @@ public class ShowServices extends javax.swing.JPanel {
     private void fillTable(String order){
         Server server = Server.getInstance();
         
-        String sql = "SELECT id, nombre,fechaPago, maxactivos, activos FROM Servicio ORDER BY "+ order +" ASC;";
+        String sql = "SELECT id, nombre,fechaPago, activos,representante, maxactivos FROM Servicio ORDER BY "+ order +" ASC;";
         
         ResultSet result = server.getResult(sql);
         
@@ -41,7 +41,7 @@ public class ShowServices extends javax.swing.JPanel {
                 row[0] = result.getString(1);
                 row[1] = result.getString(2);
                 row[2] = result.getString(3);
-                row[3] = result.getString(4);
+                row[3] = result.getString(4)+"     de     "+ result.getString(6);
                 row[4] = result.getString(5);
                 this.model.addRow(row);
                 
@@ -76,7 +76,7 @@ public class ShowServices extends javax.swing.JPanel {
 
             },
             new String [] {
-                "No.", "Tipo de Servicios", "Pago cada", "Max", "Activos"
+                "No.", "Tipo de Servicios", "Pago cada", "Activos", "representante"
             }
         ));
         tableServices.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -110,10 +110,15 @@ public class ShowServices extends javax.swing.JPanel {
             }
         });
 
-        orderSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Order", "Service", "Day pay" }));
+        orderSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Order", "Service", "Day pay", "Representant" }));
         orderSelect.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 orderSelectItemStateChanged(evt);
+            }
+        });
+        orderSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderSelectActionPerformed(evt);
             }
         });
 
@@ -190,12 +195,19 @@ public class ShowServices extends javax.swing.JPanel {
         if(option.equals("Select Order")){ this.fillTable("id");}
         else if (option.equals("Service")){ this.fillTable("nombre"); }
         else if(option.equals("Day pay")){ this.fillTable("fechaPago");}
+        else if(option.equals("Representant")){ this.fillTable("representante");}
+        
+        
         
     }//GEN-LAST:event_orderSelectItemStateChanged
 
     private void suscribeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suscribeButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_suscribeButtonActionPerformed
+
+    private void orderSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderSelectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_orderSelectActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -70,8 +70,8 @@
                 <Column editable="true" title="No." type="java.lang.Object"/>
                 <Column editable="true" title="Tipo de Servicios" type="java.lang.Object"/>
                 <Column editable="true" title="Pago cada" type="java.lang.Object"/>
-                <Column editable="true" title="Max" type="java.lang.Object"/>
                 <Column editable="true" title="Activos" type="java.lang.Object"/>
+                <Column editable="true" title="representante" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -149,15 +149,17 @@
     <Component class="javax.swing.JComboBox" name="orderSelect">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
+          <StringArray count="4">
             <StringItem index="0" value="Select Order"/>
             <StringItem index="1" value="Service"/>
             <StringItem index="2" value="Day pay"/>
+            <StringItem index="3" value="Representant"/>
           </StringArray>
         </Property>
       </Properties>
       <Events>
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="orderSelectItemStateChanged"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="orderSelectActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
