@@ -22,16 +22,23 @@ public class Principal extends javax.swing.JFrame {
     public void addPanels(){
         UserSuscribe us =new UserSuscribe();
         panelprincipal.add("Suscriptions",us);
-        
+        PaysRegister p = new PaysRegister();
         ShowServices ss = new ShowServices();
         panelprincipal.add("Services",ss);
         
+       
+        
         RegisterUser userregister=new RegisterUser();
         panelprincipal.add("User Register",userregister);
+        
         RegisterService services=new RegisterService();
         panelprincipal.add("Service Register",services);
+        
         UserControl uscontrol=new UserControl();
         panelprincipal.add("User control",uscontrol);
+        
+        
+        
     }
 
     /**
@@ -69,4 +76,10 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane panelprincipal;
     // End of variables declaration//GEN-END:variables
+
+    private static class PaysRegister {
+
+        public PaysRegister() {
+        }
+    }
 }
