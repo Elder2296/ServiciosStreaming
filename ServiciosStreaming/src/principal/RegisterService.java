@@ -48,14 +48,19 @@ public class RegisterService extends javax.swing.JPanel {
                     sqlInstruccion="INSERT INTO Servicio (nombre,fechaPago,email,contrasenia,representante,maxactivos,activos)"
                             + " VALUES(\'"+name+"\',\'"+day+"\',\'"+email+"\',\'"+pass+"\',\'"+rep+"\',"+maxAct+",0);";
                     
-                    server.getResult(sqlInstruccion);
-                    alertLabel.setText("Registro exitoso!!!");
+                    result = server.getResult(sqlInstruccion);
+                    if(!result.rowInserted()){
+                    alertLabel.setText("No se hizo el Registro !!!");
+                    }else{
+                        alertLabel.setText("Registro exitoso!!!");
+
+                        emailField.setText("");
+                        payField.setText("");
+                        passwordField.setText("");
+                        representativeField.setText("");
+                        maxactivesField.setText("");
+                    }
                     
-                    emailField.setText("");
-                    payField.setText("");
-                    passwordField.setText("");
-                    representativeField.setText("");
-                    maxactivesField.setText("");
                 }
             }catch(SQLException ex){
                 alertLabel.setText("Hubo un error!!!");
@@ -137,7 +142,7 @@ public class RegisterService extends javax.swing.JPanel {
         emailField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         typeService.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        typeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elejir Servicio", "Disney Plus", "Spotify", "Netflix", "HBO Max", "Star Plus" }));
+        typeService.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elejir Servicio", "Disney Plus", "Spotify", "Netflix", "HBO Max", "Star Plus", "Amazon Video" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
