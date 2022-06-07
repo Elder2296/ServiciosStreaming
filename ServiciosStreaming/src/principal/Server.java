@@ -24,23 +24,27 @@ public class Server {
     private static Server server;
     private static Statement st;
     private static PreparedStatement pst;
+    private static Connection conection;
     
     
     private Server(){
         
     }
     public static Server getInstance() {
+        
         if(server==null){
+            conection=null;
             server=new Server();
             try{
                 
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 
-                Connection conection=null;
+                
                 String url = "jdbc:mysql://localhost:3306/ServiciosStreaming";
                 String user = "Losa";
                 String pass  = "brC123abc";
                 conection = DriverManager.getConnection(url,user,pass);
+              
                 st = conection.createStatement();
                 
                 
@@ -77,6 +81,27 @@ public class Server {
         
     
     }
+    
+    public int getInserted(String sqlinstruction ) {
+        int idGenerado = 0;
+        try{
+            pst = conection.prepareStatement(sqlinstruction,Statement.RETURN_GENERATED_KEYS);
+            int affectedRows = pst.executeUpdate();
+            if(affectedRows !=0){
+                ResultSet result = pst.getGeneratedKeys();
+                if(result.next()){
+                    idGenerado = result.getInt(1);
+                }
+                 
+            }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        
+        return idGenerado;
+    }
+    
+    
     public int getResultUpdate(String user, int idsuscription){
         
         try{

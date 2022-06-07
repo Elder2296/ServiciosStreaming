@@ -39,15 +39,11 @@ public class Principal extends javax.swing.JFrame {
         UserControl uscontrol=new UserControl();
         panelprincipal.add("User control",uscontrol);
         
-<<<<<<< HEAD:ServiciosStreaming/src/principal/Principal.java
         PaysHistorial phistorial = new PaysHistorial();
-        panelprincipal.add("Historial",phistorial);
-        
-=======
-        
->>>>>>> 1fbf0b65cd432e862888f706e51096e77588fdfe:ServiciosStreaming/src/Principal.java
-        
-    }
+        panelprincipal.add("Historial",phistorial); 
+
+
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -42,7 +42,7 @@ public class ConfirmForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     public void dataLogin(int id){
-        this.bienvenida="Bienvenido a los Servicios de Entretenimiento, esperamos que disfrutes de todo"
+        this.bienvenida="BIENVENIDO A LOS SERVICIOS DE ENTRETENIMIENTO\n\n\n Esperamos que disfrutes de todo"
                 + " el entretenimiento que te ofrece tu servicio, estos son los pasos que debes de seguir para utilizar tu servicio"
                 + "\n\n1o. Debes iniciar sesión "
                 + "\n2o. debe crear su perfil"

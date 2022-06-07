@@ -51,7 +51,7 @@ public class PaysHistorial extends javax.swing.JPanel {
                 row[0] = result.getString(1);
                 row[1] = result.getString(2);
                 row[2] = result.getString(3);
-                row[3] = result.getString(4)=="1"? "contado":"deposito";//operador ternario
+                row[3] = result.getString(4)=="1"? "deposito":"contado";//operador ternario
                 row[4] = result.getString(5);
                 this.model.addRow(row);
             }

@@ -1,6 +1,5 @@
 package principal;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -9,7 +8,6 @@ import java.sql.SQLException;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author losa
@@ -22,74 +20,79 @@ public class RegisterUser extends javax.swing.JPanel {
     public RegisterUser() {
         initComponents();
     }
-    public void registerUser(){
-        if(nameField.getText().equals("") && lastnameField.getText().equals("") && facebookField.getText().equals("") &&
-                    whatsField.getText().equals("") && emailField.getText().equals("")){
+
+    public void registerUser() {
+        if (nameField.getText().equals("") && lastnameField.getText().equals("") && facebookField.getText().equals("")
+                && whatsField.getText().equals("") && emailField.getText().equals("")) {
             alertLabel.setText("Al menos debe llenar un cuadro!!!");
-        }else{
-            Server server=Server.getInstance();
-            
-            ResultSet result=server.getResult(this.getSql());
-            try{
-                if(result.next()){
+        } else {
+            Server server = Server.getInstance();
+
+            ResultSet result = server.getResult(this.getSql());
+            try {
+                if (result.next()) {
                     alertLabel.setText("Usuario ya se encuentra Registrado!!!");
-                }else{
-                    String name=nameField.getText();
-                    String lastN=lastnameField.getText();
-                    String userF=facebookField.getText();
-                    String wasap=whatsField.getText();
-                    String email=emailField.getText();
-                    String sqlInstruccion="INSERT INTO Clientes (nombre1,apellido1,UsuarioFacebook,whatsapp,email)"
-                            + " VALUES(\'"+ name +"\',\'"+ lastN +"\',\'"+ userF +"\',\'"+wasap+"\',\'"+email+"\');";
-                    server.getResult(sqlInstruccion);
-                    alertLabel.setText("Registro Exitoso!!!");
-                    nameField.setText("");
-                    lastnameField.setText("");
-                    facebookField.setText("");
-                    whatsField.setText("");
-                    emailField.setText("");
+                } else {
+                    String name = nameField.getText();
+                    String lastN = lastnameField.getText();
+                    String userF = facebookField.getText();
+                    String wasap = whatsField.getText();
+                    String email = emailField.getText();
+                    String sqlInstruccion = "INSERT INTO Clientes (nombre1,apellido1,UsuarioFacebook,whatsapp,email)"
+                            + " VALUES(\'" + name + "\',\'" + lastN + "\',\'" + userF + "\',\'" + wasap + "\',\'" + email + "\');";
+
+                    int idResultado = server.getInserted(sqlInstruccion);
+                    if (idResultado != 0) {
+                        alertLabel.setText("Registro Exitoso!!!");
+                        nameField.setText("");
+                        lastnameField.setText("");
+                        facebookField.setText("");
+                        whatsField.setText("");
+                        emailField.setText("");
+                    }else{
+                        alertLabel.setText("Registro Sin Exito!!!");
+                        
+                    }
+
+                    //server.getResult(sqlInstruccion);
                 }
-            }catch(SQLException ex){
-                
+            } catch (SQLException ex) {
+
                 alertLabel.setText("Error al registrar");
             }
-            
-            
+
         }
     }
-    private String getSql(){
-        String sql="";
-        String userF=facebookField.getText();
-        String wasap=whatsField.getText();
-        String email=emailField.getText();
-        
-        
-        if(userF.equals("") &&  wasap.equals("") && email.equals("")){
+
+    private String getSql() {
+        String sql = "";
+        String userF = facebookField.getText();
+        String wasap = whatsField.getText();
+        String email = emailField.getText();
+
+        if (userF.equals("") && wasap.equals("") && email.equals("")) {
             alertLabel.setText("Llene al menos un campo más!!!");
-        }
-        
-        else if(userF.equals("") && wasap.equals("")){
-            
-            sql="SELECT * FROM Clientes WHERE email = \""+email+"\"";
-        
-        }else if(userF.equals("") && email.equals("")){
-            
-            
-            sql="SELECT * FROM Clientes WHERE whatsapp = \""+wasap+"\"";
-        
-        }else if(email.equals("") && wasap.equals("")){
-            
-            sql="SELECT * FROM Clientes WHERE UsuarioFacebook = \""+userF+"\"";
-               
-        }else if(userF.equals("") ){
-            sql="SELECT * FROM Clientes WHERE whatsapp = \""+wasap+"\" and email = \""+email+"\"";
-        }else if(wasap.equals("")){
-            sql="SELECT * FROM Clientes WHERE UsuarioFacebook = \""+userF+"\" and email = \""+email+"\"";
-        }else if(email.equals("")){
-            sql="SELECT * FROM Clientes WHERE whatsapp = \""+wasap+"\" and UsuarioFacebook = \""+userF+"\"";
-        }else{
-            sql = "SELECT * FROM  Clientes WHERE UsuarioFacebook = \""+userF+"\" or "+"whatsapp = \""+wasap+"\" or email = \""+email+"\";";
-            
+        } else if (userF.equals("") && wasap.equals("")) {
+
+            sql = "SELECT * FROM Clientes WHERE email = \"" + email + "\"";
+
+        } else if (userF.equals("") && email.equals("")) {
+
+            sql = "SELECT * FROM Clientes WHERE whatsapp = \"" + wasap + "\"";
+
+        } else if (email.equals("") && wasap.equals("")) {
+
+            sql = "SELECT * FROM Clientes WHERE UsuarioFacebook = \"" + userF + "\"";
+
+        } else if (userF.equals("")) {
+            sql = "SELECT * FROM Clientes WHERE whatsapp = \"" + wasap + "\" and email = \"" + email + "\"";
+        } else if (wasap.equals("")) {
+            sql = "SELECT * FROM Clientes WHERE UsuarioFacebook = \"" + userF + "\" and email = \"" + email + "\"";
+        } else if (email.equals("")) {
+            sql = "SELECT * FROM Clientes WHERE whatsapp = \"" + wasap + "\" and UsuarioFacebook = \"" + userF + "\"";
+        } else {
+            sql = "SELECT * FROM  Clientes WHERE UsuarioFacebook = \"" + userF + "\" or " + "whatsapp = \"" + wasap + "\" or email = \"" + email + "\";";
+
         }
         return sql;
     }
@@ -240,7 +243,7 @@ public class RegisterUser extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

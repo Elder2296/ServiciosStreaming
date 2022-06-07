@@ -43,7 +43,11 @@ public class PayForm extends javax.swing.JFrame {
         String date=anio+"-"+month+"-"+day;
         
         Pay pay = new Pay();
-        Boolean process = pay.processPay(this.userField.getText(), this.serviceLabel.getText(), Double.parseDouble(amoutField.getText()), date);
+        String option = this.typePay.getSelectedItem().toString();
+        if(option.equals("Deposito")){
+            pay.setCodigoRef(this.refField.getText());  pay.setTimeofPay(this.timeField.getText());
+        }
+        Boolean process = pay.processPay(this.userField.getText(), this.serviceLabel.getText(), Double.parseDouble(amoutField.getText()), date,option);
         if(process){
             JOptionPane.showMessageDialog(this, "Pay processed");
             dispose();
@@ -74,6 +78,9 @@ public class PayForm extends javax.swing.JFrame {
         alertLabel = new javax.swing.JLabel();
         payButton = new javax.swing.JButton();
         nameLabel = new javax.swing.JLabel();
+        typePay = new javax.swing.JComboBox<>();
+        refField = new javax.swing.JTextField();
+        timeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,9 +121,42 @@ public class PayForm extends javax.swing.JFrame {
         });
 
         nameLabel.setBackground(new java.awt.Color(51, 255, 102));
-        nameLabel.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        nameLabel.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         nameLabel.setForeground(new java.awt.Color(204, 51, 0));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        typePay.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tipo de Pago", "Efectivo", "Deposito" }));
+        typePay.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                typePayItemStateChanged(evt);
+            }
+        });
+        typePay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                typePayMousePressed(evt);
+            }
+        });
+
+        refField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        refField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        refField.setText("No beleta/referencia");
+        refField.setEnabled(false);
+        refField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                refFieldKeyTyped(evt);
+            }
+        });
+
+        timeField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        timeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        timeField.setText("15:46");
+        timeField.setToolTipText("");
+        timeField.setEnabled(false);
+        timeField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                timeFieldKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,22 +175,30 @@ public class PayForm extends javax.swing.JFrame {
                                     .addComponent(jLabel2))
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(alertLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(amoutField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                                     .addComponent(serviceLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(userField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(userField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(75, 75, 75)
-                        .addComponent(payButton, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addComponent(payButton, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(typePay, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(refField)
+                            .addComponent(timeField)
+                            .addComponent(alertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(26, 26, 26)
                 .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,10 +212,16 @@ public class PayForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(amoutField))
+                    .addComponent(amoutField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(typePay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(refField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(alertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(payButton)
@@ -197,6 +251,29 @@ public class PayForm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_payButtonActionPerformed
 
+    private void refFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_refFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_refFieldKeyTyped
+
+    private void timeFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timeFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeFieldKeyTyped
+
+    private void typePayMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_typePayMousePressed
+        // TODO add your handling code here:
+//        System.out.println("opcion elegida");
+//        System.out.println(typePay.getSelectedItem().toString());
+    }//GEN-LAST:event_typePayMousePressed
+
+    private void typePayItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typePayItemStateChanged
+        // TODO add your handling code here:
+        System.out.println("opcion elegida");
+        System.out.println(typePay.getSelectedItem().toString());
+        String option = typePay.getSelectedItem().toString();
+        if(option.equals("Deposito")){refField.setEnabled(true); timeField.setEnabled(true);}
+        else{refField.setEnabled(false); timeField.setEnabled(false);}
+    }//GEN-LAST:event_typePayItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -211,7 +288,10 @@ public class PayForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton payButton;
+    private javax.swing.JTextField refField;
     private javax.swing.JLabel serviceLabel;
+    private javax.swing.JTextField timeField;
+    private javax.swing.JComboBox<String> typePay;
     private javax.swing.JLabel userField;
     // End of variables declaration//GEN-END:variables
 }

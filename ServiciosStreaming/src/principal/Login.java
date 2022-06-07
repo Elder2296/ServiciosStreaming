@@ -5,13 +5,10 @@ package principal;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 /**
  *
@@ -26,26 +23,28 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
     }
-    private void EnterToSystem(){
-        String user=userTextField.getText();
-            String pass=passField.getText();
-            Server server =Server.getInstance();
-            ResultSet result=server.getResult("SELECT * FROM User WHERE usuario = \""+user+"\" AND contrasenia=\""+pass+"\"");
-            try{
-                if(result.next()){
-                    Principal principal= new Principal();
-                    principal.setVisible(true);
-                    principal.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                    dispose();
-                    //System.out.println("INICIO DE SESION CORRECTO");
-                }else{
-                    jLabel4.setText("Datos Incorrectos!!!");
-                }
-            }catch(SQLException ex){
-                System.out.println(ex.getMessage());
-            
+
+    private void EnterToSystem() {
+        String user = userTextField.getText();
+        String pass = passField.getText();
+        Server server = Server.getInstance();
+        ResultSet result = server.getResult("SELECT * FROM User WHERE usuario = \"" + user + "\" AND contrasenia=\"" + pass + "\"");
+        try{
+            if(result.next()){
+                System.out.println("inico de sesion");
+                Principal principal = new Principal();
+                principal.setVisible(true);
+                principal.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                dispose();
+            }else {
+                jLabel4.setText("Datos Incorrectos!!!");
             }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+       
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -147,11 +146,10 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoginActionPerformed
-        
-            this.EnterToSystem();
-            
-            
-            /*
+
+        this.EnterToSystem();
+
+        /*
             
             try{
             Class.forName("org.mariadb.jdbc.Driver");
@@ -186,11 +184,7 @@ public class Login extends javax.swing.JFrame {
             System.out.println(ex.getMessage());
             
             }*/
-        
-       
-       
-        
-        
+
     }//GEN-LAST:event_ButtonLoginActionPerformed
 
     private void LabelRegisterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LabelRegisterMousePressed
@@ -203,10 +197,10 @@ public class Login extends javax.swing.JFrame {
 
     private void passFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passFieldKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==10){
+        if (evt.getKeyCode() == 10) {
             this.EnterToSystem();
         }
-        
+
     }//GEN-LAST:event_passFieldKeyPressed
 
     /**

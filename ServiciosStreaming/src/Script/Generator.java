@@ -39,7 +39,7 @@ public class Generator {
     
     }
     private int getLengthPassword(){
-        return (int)Math.floor(Math.random()*(11-8+1)+8);
+        return (int)Math.floor(Math.random()*(12-8+1)+12);
         
     }
     

@@ -1,0 +1,2 @@
+principal.ServerOnlyne
+principal.Server
