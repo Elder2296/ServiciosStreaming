@@ -1,6 +1,5 @@
 package principal;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
@@ -8,139 +7,150 @@ import Script.Generator;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.Calendar;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author losa
  */
 public class ShowUsers extends javax.swing.JFrame {
+
     private DefaultTableModel model1;
     private DefaultTableModel model2;
     private int index;
     private String user;
     private int rowSelected;
+
     /**
      * Creates new form ShowUsers
      */
     public ShowUsers(int id) {
-        this.user="";
+        this.user = "";
         this.rowSelected = 1;
         initComponents();
-        this.model1 = (DefaultTableModel)serviceTable.getModel();
-        this.model2 = (DefaultTableModel)suscriptorsTable.getModel();
+        this.model1 = (DefaultTableModel) serviceTable.getModel();
+        this.model2 = (DefaultTableModel) suscriptorsTable.getModel();
         fillTipeService(id);
         this.fillTableSuscriptors(id);
-        this.index= id;
+        this.index = id;
         setLocationRelativeTo(null);
     }
-    
-    private void changePassword(){
-        String sql = "UPDATE Servicio SET contrasenia = \'"+newpasswordLabel.getText()+"\' WHERE id = "+this.index;
-        
+
+    private void changePassword() {
+
+        Calendar cal = Calendar.getInstance();
+
+        String day2 = Integer.toString(cal.get(Calendar.DATE));
+        String month2 = Integer.toString(cal.get(Calendar.MONTH) + 1);
+        String year2 = Integer.toString(cal.get(Calendar.YEAR));
+
+        String dt = year2 + "-" + month2 + "-" + day2;
+
+        String sql = "INSERT INTO passwords(idServicio, pass, fechaCreacion)"
+                + " VALUES(" + this.index + ",\'" + newpasswordLabel.getText() + "\',\'"+dt+"\')";
+        //String sql = "UPDATE Servicio SET contrasenia = \'"+newpasswordLabel.getText()+"\' WHERE id = "+this.index;
+
         Server server = Server.getInstance();
+
+        int idPassword=server.getInserted(sql);
+        
+        sql = "UPDATE Servicio SET contrasenia = \'"+newpasswordLabel.getText()+"\',lastPassword="+idPassword+" WHERE id = "+this.index;
         
         server.getResult(sql);
+        
         this.model1.setRowCount(0);
         fillTipeService(this.index);
-        
+
     }
-    
-    private void fillTipeService(int id){
-        Server server= Server.getInstance();
-        
-        String sql="SELECT nombre, fechaPago, email, contrasenia, representante  FROM Servicio WHERE id = "+id+";";
-        ResultSet result = server.getResult(sql);
-        
-        try{
-            if(result.next()){
-                String[] row = new String[5];
-                
-                row[0]=result.getString(1);
-                row[1]=result.getString(2);
-                row[2]=result.getString(3);
-                row[3]=result.getString(4);
-                row[4]=result.getString(5);
-                
-                this.model1.addRow(row);
-                
-                
-            }
-        
-        }catch(SQLException ex){
-    
-        }
-        
-    }
-    
-    private void fillTableSuscriptors(int id){
-        
+
+    private void fillTipeService(int id) {
         Server server = Server.getInstance();
-        
-        String sql="SELECT S.user, C.UsuarioFacebook, C.whatsapp, S.estado "
-                +" FROM Suscriptores as S "
-                +" INNER JOIN Servicio AS Ser ON S.idservicios = Ser.id "
-                +" INNER JOIN Clientes AS C ON S.idCliente = C.id "
-                +" WHERE Ser.id = "+id+" ORDER BY S.estado ASC;";
+
+        String sql = "SELECT nombre, fechaPago, email, contrasenia, representante  FROM Servicio WHERE id = " + id + ";";
         ResultSet result = server.getResult(sql);
-        
-        try{
-            while(result.next()){
-                String[] row = new String[4];
-                
+
+        try {
+            if (result.next()) {
+                String[] row = new String[5];
+
                 row[0] = result.getString(1);
                 row[1] = result.getString(2);
                 row[2] = result.getString(3);
                 row[3] = result.getString(4);
-                
-                this.model2.addRow(row);
-                
-                
+                row[4] = result.getString(5);
+
+                this.model1.addRow(row);
+
             }
-        
-        }catch(SQLException ex){
-        
+
+        } catch (SQLException ex) {
+
         }
-        
-        
-        
-    
+
     }
-    private void getUser(){
-        
-        ContactForm contact=new ContactForm();
-        contact.filled(this.user,2);
+
+    private void fillTableSuscriptors(int id) {
+
+        Server server = Server.getInstance();
+
+        String sql = "SELECT S.user, C.UsuarioFacebook, C.whatsapp, S.estado "
+                + " FROM Suscriptores as S "
+                + " INNER JOIN Servicio AS Ser ON S.idservicios = Ser.id "
+                + " INNER JOIN Clientes AS C ON S.idCliente = C.id "
+                + " WHERE Ser.id = " + id + " ORDER BY S.estado ASC;";
+        ResultSet result = server.getResult(sql);
+
+        try {
+            while (result.next()) {
+                String[] row = new String[4];
+
+                row[0] = result.getString(1);
+                row[1] = result.getString(2);
+                row[2] = result.getString(3);
+                row[3] = result.getString(4);
+
+                this.model2.addRow(row);
+
+            }
+
+        } catch (SQLException ex) {
+
+        }
+
+    }
+
+    private void getUser() {
+
+        ContactForm contact = new ContactForm();
+        contact.filled(this.user, 2);
         contact.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         contact.setVisible(true);
-        
-        
-        
-        
+
     }
-    private void getInfo(){
-        String query = "SELECT email, contrasenia FROM Servicio WHERE   id = "+this.index+";";
+
+    private void getInfo() {
+        String query = "SELECT email, contrasenia FROM Servicio WHERE   id = " + this.index + ";";
         Server server = Server.getInstance();
         ResultSet result = server.getResult(query);
         String textcopy = "";
-        try{
-            if(result.next()){
-                textcopy = result.getString(1)+"      "+result.getString(2);
+        try {
+            if (result.next()) {
+                textcopy = result.getString(1) + "      " + result.getString(2);
             }
-        
-        }catch(SQLException ex){
+
+        } catch (SQLException ex) {
         }
-        
-        
+
         StringSelection ss = new StringSelection(textcopy);
         Toolkit tool = Toolkit.getDefaultToolkit();
         Clipboard clip = tool.getSystemClipboard();
-        clip.setContents(ss,null);
-        
+        clip.setContents(ss, null);
+
     }
 
     /**
@@ -301,42 +311,41 @@ public class ShowUsers extends javax.swing.JFrame {
     private void contactButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactButtonActionPerformed
         // TODO add your handling code here:
         this.getUser();
-        
+
     }//GEN-LAST:event_contactButtonActionPerformed
 
     private void suscriptorsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_suscriptorsTableMouseClicked
         // TODO add your handling code here:
-        
+
         this.rowSelected = suscriptorsTable.rowAtPoint(evt.getPoint());
-        
+
         int columna = suscriptorsTable.columnAtPoint(evt.getPoint());
-        if ((this.rowSelected > -1) && (columna > -1))
-            System.out.println("Fila: "+rowSelected);
-            //System.out.println(modelo.getValueAt(fila,columna));
+        if ((this.rowSelected > -1) && (columna > -1)) {
+            System.out.println("Fila: " + rowSelected);
+        }
+        //System.out.println(modelo.getValueAt(fila,columna));
         //System.out.println("Value: "+ this.modelo.getValueAt(rowSelected, 1));
         //System.out.println("Index: "+this.modelo.getValueAt(rowSelected, 0));
-        
-        try{
+
+        try {
             this.user = this.model2.getValueAt(this.rowSelected, 0).toString();
-            
-            
-            
-        }catch(Exception e){
-            System.out.println(e.getMessage());     
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         System.out.println(this.user);
     }//GEN-LAST:event_suscriptorsTableMouseClicked
 
     private void copyInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyInfoActionPerformed
         // TODO add your handling code here:
-        
+
         this.getInfo();
     }//GEN-LAST:event_copyInfoActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton contactButton;
     private javax.swing.JButton copyInfo;
