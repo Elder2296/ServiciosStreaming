@@ -51,7 +51,8 @@ public class PaysHistorial extends javax.swing.JPanel {
                 row[0] = result.getString(1);
                 row[1] = result.getString(2);
                 row[2] = result.getString(3);
-                row[3] = result.getString(4)=="1"? "deposito":"contado";//operador ternario
+                
+                row[3] = result.getInt(4)==1? "contado":"deposito";//operador ternario
                 row[4] = result.getString(5);
                 this.model.addRow(row);
             }
@@ -85,6 +86,7 @@ public class PaysHistorial extends javax.swing.JPanel {
         lastDate = new rojeru_san.componentes.RSDateChooser();
         calculateButton = new javax.swing.JButton();
         calculateButton1 = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
 
         tablePays.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,6 +117,14 @@ public class PaysHistorial extends javax.swing.JPanel {
         calculateButton1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         calculateButton1.setText("Generate PDF");
 
+        updateButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,10 +140,12 @@ public class PaysHistorial extends javax.swing.JPanel {
                         .addGap(29, 29, 29)
                         .addComponent(lastDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
+                        .addGap(139, 139, 139)
                         .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(calculateButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(calculateButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -148,7 +160,8 @@ public class PaysHistorial extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calculateButton)
-                    .addComponent(calculateButton1))
+                    .addComponent(calculateButton1)
+                    .addComponent(updateButton))
                 .addGap(36, 36, 36))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -173,6 +186,12 @@ public class PaysHistorial extends javax.swing.JPanel {
         
     }//GEN-LAST:event_calculateButtonActionPerformed
 
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        // TODO add your handling code here:
+        this.model.setRowCount(0);
+        this.fillTable("", "");
+    }//GEN-LAST:event_updateButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
@@ -181,5 +200,6 @@ public class PaysHistorial extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private rojeru_san.componentes.RSDateChooser lastDate;
     private javax.swing.JTable tablePays;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
