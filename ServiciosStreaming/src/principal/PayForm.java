@@ -267,7 +267,7 @@ public class PayForm extends javax.swing.JFrame {
 
     private void typePayItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typePayItemStateChanged
         // TODO add your handling code here:
-        System.out.println("opcion elegida");
+        //System.out.println("opcion elegida");
         System.out.println(typePay.getSelectedItem().toString());
         String option = typePay.getSelectedItem().toString();
         if(option.equals("Deposito")){refField.setEnabled(true); timeField.setEnabled(true);}

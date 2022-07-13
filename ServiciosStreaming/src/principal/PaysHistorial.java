@@ -20,20 +20,28 @@ public class PaysHistorial extends javax.swing.JPanel {
      * Creates new form PaysHistorial
      */
     private DefaultTableModel model;
+    private String filter;
     public PaysHistorial() {
         initComponents();
         this.model = (DefaultTableModel)this.tablePays.getModel();
-        this.fillTable("", "");
+        this.filter ="Todos";
+        this.fillTable("", "",this.filter);
     }
     
-    private void fillTable(String last, String init){
+    private void fillTable(String last, String init, String filter){
         
         Server server  = Server.getInstance();
         String query="";
-        if(last!=""){
+        if(last!="" && init!=""){
+            if(filter.equals("Depositos"))  query="SELECT idpay,service,datepay,tipepay,amount "
+                    + "FROM pay WHERE datepay>=\'"+init+"\' AND datepay<=\'"+last+"\' AND tipepay = 2 ORDER BY datepay DESC;";
             
-            query="SELECT idpay,service,datepay,tipepay,amount FROM pay WHERE datepay>=\'"+init+"\' AND datepay<=\'"+last+"\' ORDER BY datepay DESC;";
-            System.out.println(query);
+            else if(filter.equals("Efectivo")) query="SELECT idpay,service,datepay,tipepay,amount "
+                    + "FROM pay WHERE datepay>=\'"+init+"\' AND datepay<=\'"+last+"\' AND tipepay = 1 ORDER BY datepay DESC;";
+            
+            else query="SELECT idpay,service,datepay,tipepay,amount "
+                    + "FROM pay WHERE datepay>=\'"+init+"\' AND datepay<=\'"+last+"\' ORDER BY datepay DESC;";
+            //System.out.println(query);
         
         }else{
             query="SELECT idpay,service,datepay,tipepay,amount FROM pay ORDER BY datepay DESC;";
@@ -87,6 +95,9 @@ public class PaysHistorial extends javax.swing.JPanel {
         calculateButton = new javax.swing.JButton();
         calculateButton1 = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
+        filterOption = new javax.swing.JComboBox<>();
+        acepptedButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
 
         tablePays.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,6 +136,30 @@ public class PaysHistorial extends javax.swing.JPanel {
             }
         });
 
+        filterOption.setForeground(new java.awt.Color(51, 102, 255));
+        filterOption.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Depositos", "Efectivo" }));
+        filterOption.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filterOptionItemStateChanged(evt);
+            }
+        });
+
+        acepptedButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        acepptedButton.setText("Confirm");
+        acepptedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acepptedButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,37 +167,47 @@ public class PaysHistorial extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(219, 219, 219)
+                        .addGap(162, 162, 162)
                         .addComponent(initDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
-                        .addComponent(lastDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lastDate, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(filterOption, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(calculateButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGap(32, 32, 32)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(48, 48, 48))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(calculateButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(acepptedButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(initDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(initDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lastDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(filterOption, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(calculateButton)
                     .addComponent(calculateButton1)
-                    .addComponent(updateButton))
-                .addGap(36, 36, 36))
+                    .addComponent(updateButton)
+                    .addComponent(acepptedButton)
+                    .addComponent(cancelButton)
+                    .addComponent(calculateButton))
+                .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -179,7 +224,9 @@ public class PaysHistorial extends javax.swing.JPanel {
             }else{
                 
                 this.model.setRowCount(0);
-                this.fillTable( this.convertDate(this.lastDate.getDatoFecha()),this.convertDate(this.initDate.getDatoFecha()));
+                
+                
+                this.fillTable( this.convertDate(this.lastDate.getDatoFecha()),this.convertDate(this.initDate.getDatoFecha()),this.filter);
             }
         }
         
@@ -189,13 +236,29 @@ public class PaysHistorial extends javax.swing.JPanel {
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
         this.model.setRowCount(0);
-        this.fillTable("", "");
+        this.fillTable("", "",this.filter);
     }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void acepptedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acepptedButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_acepptedButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void filterOptionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterOptionItemStateChanged
+        // TODO add your handling code here:
+        this.filter = this.filterOption.getSelectedItem().toString();
+    }//GEN-LAST:event_filterOptionItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton acepptedButton;
     private javax.swing.JButton calculateButton;
     private javax.swing.JButton calculateButton1;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> filterOption;
     private rojeru_san.componentes.RSDateChooser initDate;
     private javax.swing.JScrollPane jScrollPane1;
     private rojeru_san.componentes.RSDateChooser lastDate;
