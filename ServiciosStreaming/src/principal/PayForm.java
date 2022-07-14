@@ -22,9 +22,19 @@ public class PayForm extends javax.swing.JFrame {
     /**
      * Creates new form PayForm
      */
+    private String hour;
+    private String minute;
+    private String time;
     public PayForm() {
         initComponents();
+        this.hour ="00";
+        this.minute ="00";
+        this.time ="PM";
+        TextPrompt placeholder= new TextPrompt("00000000000000",refField);
+        placeholder.changeAlpha(0.75f);
         setLocationRelativeTo(null);
+        
+        
     }
     public void setLayout(String user,String service,String name, String lastname){
         this.userField.setText(user);
@@ -45,7 +55,8 @@ public class PayForm extends javax.swing.JFrame {
         Pay pay = new Pay();
         String option = this.typePay.getSelectedItem().toString();
         if(option.equals("Deposito")){
-            pay.setCodigoRef(this.refField.getText());  pay.setTimeofPay(this.timeField.getText());
+            String datePay = this.hour+":"+this.minute+" "+this.time;
+            pay.setCodigoRef(this.refField.getText());  pay.setTimeofPay(datePay);
         }
         Boolean process = pay.processPay(this.userField.getText(), this.serviceLabel.getText(), Double.parseDouble(amoutField.getText()), date,option);
         if(process){
@@ -80,7 +91,10 @@ public class PayForm extends javax.swing.JFrame {
         nameLabel = new javax.swing.JLabel();
         typePay = new javax.swing.JComboBox<>();
         refField = new javax.swing.JTextField();
-        timeField = new javax.swing.JTextField();
+        hoursField = new javax.swing.JComboBox<>();
+        doubleDot = new javax.swing.JLabel();
+        minutesField = new javax.swing.JComboBox<>();
+        timeField = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,7 +153,6 @@ public class PayForm extends javax.swing.JFrame {
 
         refField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         refField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        refField.setText("No beleta/referencia");
         refField.setEnabled(false);
         refField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -147,14 +160,46 @@ public class PayForm extends javax.swing.JFrame {
             }
         });
 
-        timeField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        timeField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        timeField.setText("15:46");
-        timeField.setToolTipText("");
+        hoursField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
+        hoursField.setEnabled(false);
+        hoursField.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                hoursFieldItemStateChanged(evt);
+            }
+        });
+        hoursField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hoursFieldActionPerformed(evt);
+            }
+        });
+
+        doubleDot.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        doubleDot.setText(":");
+        doubleDot.setEnabled(false);
+
+        minutesField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        minutesField.setEnabled(false);
+        minutesField.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                minutesFieldItemStateChanged(evt);
+            }
+        });
+        minutesField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                minutesFieldActionPerformed(evt);
+            }
+        });
+
+        timeField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AM", "PM" }));
         timeField.setEnabled(false);
-        timeField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                timeFieldKeyTyped(evt);
+        timeField.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                timeFieldItemStateChanged(evt);
+            }
+        });
+        timeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeFieldActionPerformed(evt);
             }
         });
 
@@ -163,9 +208,10 @@ public class PayForm extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
@@ -175,30 +221,34 @@ public class PayForm extends javax.swing.JFrame {
                                     .addComponent(jLabel2))
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(amoutField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                                    .addComponent(amoutField, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(serviceLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(userField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(userField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
+                        .addGap(59, 59, 59)
                         .addComponent(payButton, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(typePay, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(refField)
-                            .addComponent(timeField)
-                            .addComponent(alertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(hoursField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(doubleDot)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(minutesField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(typePay, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(refField)
+                                .addComponent(alertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(userField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -217,15 +267,21 @@ public class PayForm extends javax.swing.JFrame {
                 .addComponent(typePay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hoursField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(doubleDot)
+                    .addComponent(minutesField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(timeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(alertLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(calendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(payButton)
-                .addGap(36, 36, 36))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -255,10 +311,6 @@ public class PayForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_refFieldKeyTyped
 
-    private void timeFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timeFieldKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_timeFieldKeyTyped
-
     private void typePayMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_typePayMousePressed
         // TODO add your handling code here:
 //        System.out.println("opcion elegida");
@@ -270,9 +322,33 @@ public class PayForm extends javax.swing.JFrame {
         //System.out.println("opcion elegida");
         System.out.println(typePay.getSelectedItem().toString());
         String option = typePay.getSelectedItem().toString();
-        if(option.equals("Deposito")){refField.setEnabled(true); timeField.setEnabled(true);}
-        else{refField.setEnabled(false); timeField.setEnabled(false);}
+        if(option.equals("Deposito")){refField.setEnabled(true); timeField.setEnabled(true); hoursField.setEnabled(true); minutesField.setEnabled(true); doubleDot.setEnabled(true);}
+        else{refField.setEnabled(false); timeField.setEnabled(false); hoursField.setEnabled(false); minutesField.setEnabled(false); doubleDot.setEnabled(false);}
     }//GEN-LAST:event_typePayItemStateChanged
+
+    private void hoursFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hoursFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hoursFieldActionPerformed
+
+    private void minutesFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minutesFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_minutesFieldActionPerformed
+
+    private void timeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeFieldActionPerformed
+
+    private void hoursFieldItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hoursFieldItemStateChanged
+        this.hour = hoursField.getSelectedItem().toString();
+    }//GEN-LAST:event_hoursFieldItemStateChanged
+
+    private void minutesFieldItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_minutesFieldItemStateChanged
+        this.minute = minutesField.getSelectedItem().toString();
+    }//GEN-LAST:event_minutesFieldItemStateChanged
+
+    private void timeFieldItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_timeFieldItemStateChanged
+        this.time = timeField.getSelectedItem().toString();
+    }//GEN-LAST:event_timeFieldItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -283,14 +359,17 @@ public class PayForm extends javax.swing.JFrame {
     private javax.swing.JLabel alertLabel;
     private javax.swing.JTextField amoutField;
     private rojeru_san.componentes.RSDateChooser calendar;
+    private javax.swing.JLabel doubleDot;
+    private javax.swing.JComboBox<String> hoursField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JComboBox<String> minutesField;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton payButton;
     private javax.swing.JTextField refField;
     private javax.swing.JLabel serviceLabel;
-    private javax.swing.JTextField timeField;
+    private javax.swing.JComboBox<String> timeField;
     private javax.swing.JComboBox<String> typePay;
     private javax.swing.JLabel userField;
     // End of variables declaration//GEN-END:variables
