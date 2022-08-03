@@ -21,6 +21,7 @@ public class Pay {
         this.codigoRef="";
         this.timeofPay="";
     }
+    
 
     public String getCodigoRef() {
         return codigoRef;
@@ -109,6 +110,25 @@ public class Pay {
         }
         
         return false;
+    }
+    
+    public void cancelPay(int idPay){
+        Server server = Server.getInstance();
+        //Primero Se cambiará el estado del pago
+        String script = "UPDATE pay SET state = \'canceled\' WHERE idpay = "+idPay+";";
+        
+        ResultSet result = server.getResult(script);
+        
+        try{
+            if(result.next()){
+                System.out.println("Se cancelo un pago");
+            }
+        }catch(Exception e){
+            System.out.println("No se cancelo nada");
+        }
+        
+        
+    
     }
 
     private int getResult(Double amount, String service) {

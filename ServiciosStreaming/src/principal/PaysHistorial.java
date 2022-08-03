@@ -21,8 +21,13 @@ public class PaysHistorial extends javax.swing.JPanel {
      */
     private DefaultTableModel model;
     private String filter;
+    private int rowSelected;
+    private int idPay;
+    private Pay payTransation;
     public PaysHistorial() {
         initComponents();
+        this.payTransation = new Pay();
+        this.rowSelected =0;
         this.model = (DefaultTableModel)this.tablePays.getModel();
         this.filter ="Todos";
         this.fillTable("", "",this.filter);
@@ -33,10 +38,10 @@ public class PaysHistorial extends javax.swing.JPanel {
         Server server  = Server.getInstance();
         String query="";
         if(last!="" && init!=""){
-            if(filter.equals("Depositos"))  query="SELECT idpay,service,datepay,tipepay,amount "
+            if(filter.equals("Depositos"))  query="SELECT idpay,service,datepay,tipepay,amount,state "
                     + "FROM pay WHERE datepay>=\'"+init+"\' AND datepay<=\'"+last+"\' AND tipepay = 2 ORDER BY datepay DESC;";
             
-            else if(filter.equals("Efectivo")) query="SELECT idpay,service,datepay,tipepay,amount "
+            else if(filter.equals("Efectivo")) query="SELECT idpay,service,datepay,tipepay,amount,state "
                     + "FROM pay WHERE datepay>=\'"+init+"\' AND datepay<=\'"+last+"\' AND tipepay = 1 ORDER BY datepay DESC;";
             
             else query="SELECT idpay,service,datepay,tipepay,amount "
@@ -44,7 +49,7 @@ public class PaysHistorial extends javax.swing.JPanel {
             //System.out.println(query);
         
         }else{
-            query="SELECT idpay,service,datepay,tipepay,amount FROM pay ORDER BY datepay DESC;";
+            query="SELECT idpay,service,datepay,tipepay,amount,state FROM pay ORDER BY datepay DESC;";
         
         }
         
@@ -53,16 +58,18 @@ public class PaysHistorial extends javax.swing.JPanel {
         
         try{
             while(result.next()){
-                String[] row = new String[5];
                 
+                if(!(result.getString(6).equals("canceled"))){
+                    String[] row = new String[5];
                 
-                row[0] = result.getString(1);
-                row[1] = result.getString(2);
-                row[2] = result.getString(3);
-                
-                row[3] = result.getInt(4)==1? "contado":"deposito";//operador ternario
-                row[4] = result.getString(5);
-                this.model.addRow(row);
+                    row[0] = result.getString(1);
+                    row[1] = result.getString(2);
+                    row[2] = result.getString(3);
+
+                    row[3] = result.getInt(4)==1? "contado":"deposito";//operador ternario
+                    row[4] = result.getString(5);
+                    this.model.addRow(row);
+                }
             }
         }catch(SQLException ex){
         }
@@ -78,6 +85,11 @@ public class PaysHistorial extends javax.swing.JPanel {
         System.out.println("DIA: "+day);
         dateResult=year+"-"+month+"-"+day;
         return dateResult;
+    }
+    private void cancelPay(int idPay){
+        this.payTransation.cancelPay(idPay);
+        this.model.setRowCount(0);
+        this.fillTable("", "", "Todos");
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,6 +125,11 @@ public class PaysHistorial extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablePays.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePaysMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tablePays);
@@ -181,13 +198,13 @@ public class PaysHistorial extends javax.swing.JPanel {
                 .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(calculateButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(acepptedButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,13 +261,24 @@ public class PaysHistorial extends javax.swing.JPanel {
     }//GEN-LAST:event_acepptedButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        this.cancelPay(idPay);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void filterOptionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterOptionItemStateChanged
         // TODO add your handling code here:
         this.filter = this.filterOption.getSelectedItem().toString();
     }//GEN-LAST:event_filterOptionItemStateChanged
+
+    private void tablePaysMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePaysMouseClicked
+        this.rowSelected = tablePays.rowAtPoint(evt.getPoint());
+        try{
+            this.idPay = Integer.parseInt(this.model.getValueAt(this.rowSelected,0).toString());
+        }catch(Exception e){
+        
+        }
+        
+        
+    }//GEN-LAST:event_tablePaysMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

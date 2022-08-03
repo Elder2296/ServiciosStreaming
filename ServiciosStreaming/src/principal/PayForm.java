@@ -52,6 +52,7 @@ public class PayForm extends javax.swing.JFrame {
         int anio=fecha.getYear()+1900;
         String date=anio+"-"+month+"-"+day;
         
+        
         Pay pay = new Pay();
         String option = this.typePay.getSelectedItem().toString();
         if(option.equals("Deposito")){

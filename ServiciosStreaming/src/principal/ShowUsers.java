@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.Calendar;
+import promotions.PromotionFrame;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -171,6 +172,7 @@ public class ShowUsers extends javax.swing.JFrame {
         newpasswordLabel = new javax.swing.JLabel();
         contactButton = new javax.swing.JButton();
         copyInfo = new javax.swing.JButton();
+        promotionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -251,6 +253,14 @@ public class ShowUsers extends javax.swing.JFrame {
             }
         });
 
+        promotionButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        promotionButton.setText("Promotions");
+        promotionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                promotionButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -265,9 +275,11 @@ public class ShowUsers extends javax.swing.JFrame {
                         .addGap(330, 330, 330)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(177, Short.MAX_VALUE)
-                .addComponent(generatorButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap(174, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(generatorButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(promotionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(contactButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(newpasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -290,7 +302,9 @@ public class ShowUsers extends javax.swing.JFrame {
                     .addComponent(generatorButton)
                     .addComponent(newpasswordLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contactButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(contactButton)
+                    .addComponent(promotionButton))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -342,6 +356,13 @@ public class ShowUsers extends javax.swing.JFrame {
         this.getInfo();
     }//GEN-LAST:event_copyInfoActionPerformed
 
+    private void promotionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_promotionButtonActionPerformed
+        // TODO add your handling code here:
+        PromotionFrame comunication=new PromotionFrame(this.user);
+        comunication.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        comunication.setVisible(true);
+    }//GEN-LAST:event_promotionButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -354,6 +375,7 @@ public class ShowUsers extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel newpasswordLabel;
+    private javax.swing.JButton promotionButton;
     private javax.swing.JTable serviceTable;
     private javax.swing.JTable suscriptorsTable;
     // End of variables declaration//GEN-END:variables
